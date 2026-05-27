@@ -10,7 +10,7 @@
 
 networks:
   acdg-bv:
-    external: true
+    name: acdg-bv
 
 volumes:
   nats_data:

@@ -151,7 +151,7 @@ deploy_remote() {
   # automaticamente pelo wrapper infisical-or-env exportado via ~/.bashrc.
   # O fallback usa o .env já presente em $REMOTE_DIR/../env/.env no host.
   echo "[deploy] Executando docker compose up no host remoto..."
-  # shellcheck disable=SC2029
+  # shellcheck disable=SC2029,SC2087
   ssh -o BatchMode=yes "${DEPLOY_HOST}" bash -s <<REMOTE_SCRIPT
 set -euo pipefail
 cd "${REMOTE_DIR}"

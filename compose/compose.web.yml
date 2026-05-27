@@ -13,7 +13,7 @@
 
 networks:
   acdg-bv:
-    external: true
+    name: acdg-bv
 
 services:
   web:

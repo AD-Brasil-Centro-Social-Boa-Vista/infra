@@ -8,7 +8,7 @@
 
 networks:
   acdg-bv:
-    external: true
+    name: acdg-bv
 
 secrets:
   postgres_superuser_password:

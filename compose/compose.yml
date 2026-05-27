@@ -28,4 +28,3 @@ include:
 networks:
   acdg-bv:
     name: acdg-bv
-    driver: bridge
