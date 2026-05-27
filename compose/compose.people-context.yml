@@ -17,7 +17,8 @@ secrets:
 
 services:
   people-context:
-    image: ${REGISTRY:-ghcr.io/acdgbrasil}/svc-people-context:${PC_TAG:-latest}
+    # Pin Trilho A (ADR-BV-001): tag + digest imutável. Dependabot (docker) bumpa ambos.
+    image: ghcr.io/acdgbrasil/svc-people-context:v0.4.1@sha256:a4b2bafd38ec4599afff8eb0df921d29a0ee071c786a722e4ab87bdf86740934
     restart: unless-stopped
     env_file:
       - path: ../env/.env

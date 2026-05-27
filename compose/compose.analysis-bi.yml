@@ -20,7 +20,8 @@ secrets:
 
 services:
   analysis-bi:
-    image: ${REGISTRY:-ghcr.io/acdgbrasil}/svc-analysis-bi:${BI_TAG:-latest}
+    # Pin Trilho A (ADR-BV-001): tag + digest imutável. Dependabot (docker) bumpa ambos.
+    image: ghcr.io/acdgbrasil/svc-analysis-bi:v0.1.2@sha256:7584c3de216187c9eb95e0390de679cd6d6911e22bf00517a421ea69014e9a2d
     restart: unless-stopped
     profiles:
       - analytics

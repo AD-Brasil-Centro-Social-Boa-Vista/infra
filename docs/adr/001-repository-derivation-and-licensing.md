@@ -76,10 +76,10 @@ Pesquisa de boas práticas (2026) convergiu para **minimizar manutenção** fork
 - **Tudo MIT**: descartado — opta-se por copyleft no core (decisão do detentor) para proteger a plataforma de saúde.
 
 ## Pendências (humano)
-- `INFRA-BV-LICENSE-PUSH` — empurrar os commits de licença para `acdgbrasil/svc-social-care` e `acdgbrasil/svc-people-context` (feitos localmente por esta ADR; revisar antes do push).
-- `INFRA-BV-GHCR` — CI de cada serviço publicando imagem no GHCR (pré-requisito do Trilho A).
-- `INFRA-BV-PIN-DIGESTS` — trocar `image: ${REGISTRY}/...:${TAG}` por `…:<tag>@sha256:<digest>` literais quando as imagens existirem (habilita Dependabot/Renovate).
-- `INFRA-BV-WEB-AGPL` — decidir publicação da fonte de `web` (AGPL + servido).
+- ✅ `INFRA-BV-LICENSE-PUSH` — **feito (2026-05-27)**: AGPL-3.0 empurrada e mergeada em `svc-social-care` (PR #19, squash) e `svc-people-context`.
+- ✅ `INFRA-BV-GHCR` — **feito (2026-05-27)**: os 3 serviços publicam no GHCR via reusable workflow da org (`release-ghcr.yml`); `svc-analysis-bi` foi o último a receber o caller.
+- ✅ `INFRA-BV-PIN-DIGESTS` — **feito (2026-05-27)**: `compose.{social-care,people-context,analysis-bi}.yml` pinam `…:<tag>@sha256:<digest>` literais (social-care v0.14.3, people-context v0.4.1, analysis-bi v0.1.2). Dependabot (`docker` → `/compose`) bumpa daqui pra frente.
+- `INFRA-BV-WEB-AGPL` — decidir publicação da fonte de `web` (AGPL + servido). **Bloqueado por:** `web` ainda sem `Dockerfile` (pré-Sprint 0) → sem imagem GHCR → `compose.web.yml` segue templated (`${REGISTRY}/web:${WEB_TAG}`) até existir.
 
 ## Referências
 - ADR-009 (Deployment ACDG-BV), ADR-010 (Conecta Raros Federation)
