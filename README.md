@@ -5,8 +5,14 @@ deploy autocontido da plataforma ACDG numa **VPS única** Magalu Cloud (`br-ne1`
 **Docker Compose v5** + **Caddy** + **Postgres 16** + **NATS JetStream** + **Authentik** (OIDC) +
 **Infisical/Vaultwarden** (secrets), provisionado por **OpenTofu/Terraform** (provider Magalu `mgc`).
 
-> Licença **MIT** · tudo open source. **Nenhum secret ou dado** vive neste repo (ver `.gitignore`).
-> O espelho offline de docs (`reference/`, ~700MB) e o workspace de evals são **local-only** (gitignored).
+> **Licenciamento (ADR-BV-001):** este repo `infra` (cola de deploy) é **MIT**; os **serviços core**
+> (`social-care`, `people-context`, `analysis-bi`, `web`) são **AGPL-3.0** (copyleft + cláusula de rede,
+> protege a plataforma de dados de saúde). O `infra` apenas **orquestra/referencia** as imagens — não
+> embute o código AGPL (mera agregação, sem conflito). Estratégia de derivação (fork vs consumir imagens)
+> em [`docs/adr/001-repository-derivation-and-licensing.md`](docs/adr/001-repository-derivation-and-licensing.md).
+>
+> **Nenhum secret ou dado** vive neste repo (ver `.gitignore`). O espelho offline de docs
+> (`reference/`, ~700MB) e o workspace de evals são **local-only** (gitignored).
 
 ## Estrutura
 
