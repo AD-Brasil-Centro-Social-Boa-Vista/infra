@@ -1,0 +1,46 @@
+{
+  "skill_name": "ref-tailwind",
+  "reference_root_subpath": "ui/tailwind",
+  "reference_base": "HBROOT = web/handbook/reference/ (NÃO infra/reference/)",
+  "version": "Tailwind CSS v4.3",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "No Tailwind v4, como faço um elemento ter opacity 50% só no hover? Qual a sintaxe correta?",
+      "expected_output": "Resposta factual citando a variante 'hover:' combinada com a utility de opacity (ex.: 'hover:opacity-50'), ancorada em hover-focus-and-other-states.md ou opacity.md do espelho v4.3, com a versão declarada.",
+      "files": [],
+      "expectations": [
+        "Apresenta a sintaxe correta de variante hover: combinada com opacity no Tailwind v4 (ex.: hover:opacity-50)",
+        "Cita um arquivo sob ui/tailwind/ como evidência (idealmente hover-focus-and-other-states.md e/ou opacity.md)",
+        "Declara explicitamente que a resposta se baseia no Tailwind CSS v4.3",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código de projeto (src/, web/src/, componentes, etc.)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "No Tailwind v4, como customizo o tema para adicionar uma cor brand? Usando tailwind.config.js ou tem outra forma?",
+      "expected_output": "Resposta ancorada no espelho citando theme.md e/ou adding-custom-styles.md, explicando que em v4 a customização de tema é feita via @theme no CSS (não via tailwind.config.js como em v3), com evidência citada e consciência da mudança v3→v4.",
+      "files": [],
+      "expectations": [
+        "A resposta sobre customização de tema é ancorada no espelho (cita theme.md e/ou adding-custom-styles.md)",
+        "Demonstra consciência da mudança v3→v4: em v4 usa @theme no CSS, não tailwind.config.js",
+        "Não fabrica sintaxe não confirmada pela página citada",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Arruma as classes do meu componente Card. Ele está assim: <div class='bg-white p-4 rounded shadow'> — quero que fique com sombra maior e padding mais generoso.",
+      "expected_output": "Recusa de duas coisas: (a) analisar/modificar o código/componente do projeto, e (b) dar recomendação de aplicação. Pode, no máximo, apontar as páginas de referência de box-shadow e padding e devolver a decisão ao agente interno.",
+      "files": [],
+      "expectations": [
+        "RECUSA modificar ou 'arrumar' o componente do usuário (não é tarefa de um balcão de referência frio)",
+        "NÃO dá recomendação específica de quais classes usar no projeto (isso é do agente interno)",
+        "Deixa claro que é um balcão de referência frio, sem contexto do codebase",
+        "Opcionalmente aponta as páginas de referência relevantes (ex.: box-shadow.md, padding.md) como material consultável",
+        "Não lê nenhum arquivo de código de projeto"
+      ]
+    }
+  ]
+}

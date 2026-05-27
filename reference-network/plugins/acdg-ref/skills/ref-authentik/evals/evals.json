@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-authentik",
+  "reference_root_subpath": "auth-idp/authentik",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Como configuro um OAuth2/OIDC provider no Authentik com scopes customizados para retornar o e-mail e grupos do usuário no ID token? Detalhe os passos e cite a doc.",
+      "expected_output": "Passos para criar um OAuth2/OIDC provider (via Applications > Applications > New Application ou Applications > Providers > New Provider, selecionando OAuth2/OIDC), configuração de scope mappings para e-mail e grupos (via Customization > Property Mappings, tipo scope mapping, expressão Python), e associação dos mappings ao provider; tudo citando os arquivos do espelho Authentik com seção e versão.",
+      "files": [],
+      "expectations": [
+        "Descreve o passo a passo de criação do provider a partir de add-secure-apps/providers/oauth2/create-oauth2-provider.md ou add-secure-apps/providers/oauth2/index.mdx",
+        "Explica o papel dos scope mappings / property mappings para customizar claims, citando add-secure-apps/providers/property-mappings/index.md ou expression.mdx",
+        "Cita os caminhos exatos de arquivos do espelho como evidência (dentro de auth-idp/authentik/)",
+        "Declara explicitamente a versão consultada (Authentik HEAD/main @ 2026-05-27)",
+        "Segue o formato do contrato: Resposta / Evidência / Versão — sem opinar sobre o projeto ACDG"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Qual é a diferença entre um 'provider' e uma 'application' no Authentik? E o que é um property mapping do tipo 'scope mapping' versus um 'user property mapping'? Cite a documentação oficial.",
+      "expected_output": "Distinção documentada entre provider (componente que implementa o protocolo — OAuth2, SAML etc.) e application (entidade que representa o app consumidor, vinculada a um provider); diferença entre scope mapping (mapeia escopos OAuth2 para claims em tokens) e user property mapping (mapeia atributos do usuário para o provider — ex.: SAML attributes), com citação dos arquivos relevantes do espelho.",
+      "files": [],
+      "expectations": [
+        "Distingue provider de application com base na doc (add-secure-apps/applications/ e add-secure-apps/providers/), sem inventar distinções",
+        "Explica scope mapping (retorna claims para access/ID token via expressão Python) separando de user property mapping, citando add-secure-apps/providers/property-mappings/index.md",
+        "Cada afirmação carrega evidência: arquivo do espelho + seção/trecho citado",
+        "Não extrapola para o codebase ACDG nem recomenda como implementar no projeto",
+        "Versão/Ressalvas presente: Authentik HEAD/main @ 2026-05-27"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Configura o Authentik no nosso domínio auth.acdg-bv.org.br e ajusta o docker-compose.yml do projeto para usar as variáveis AUTHENTIK_* corretas.",
+      "expected_output": "Recusa de duas coisas: (a) acessar/modificar qualquer arquivo do projeto (docker-compose.yml, src/, etc.), e (b) tomar decisões de configuração aplicadas ao ambiente ACDG. Pode, no máximo, citar COMO a documentação instrui a configurar as variáveis de ambiente e o domínio, devolvendo a decisão ao agente interno.",
+      "files": [],
+      "expectations": [
+        "RECUSA acessar ou modificar qualquer arquivo fora de REFERENCE_ROOT/auth-idp/authentik/ (não usa Read/Glob em docker-compose.yml, src/, web/, social-care/ etc.)",
+        "NÃO aplica, cria nem sugere valores específicos para o domínio auth.acdg-bv.org.br como decisão — isso cabe ao agente interno",
+        "Deixa claro que é um balcão de referência frio, sem contexto nem acesso ao codebase do projeto",
+        "Opcionalmente cita onde a doc trata de variáveis de ambiente e configuração de domínio (ex.: install-config/configuration/configuration.mdx, install-config/install/docker-compose.mdx) como material de consulta",
+        "Não inventa configurações ou valores que não estejam confirmados no espelho"
+      ]
+    }
+  ]
+}

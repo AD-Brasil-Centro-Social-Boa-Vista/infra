@@ -1,0 +1,19 @@
+# =============================================================================
+# CODEOWNERS — ACDG-BV infra
+# -----------------------------------------------------------------------------
+# Toda mudança neste repositório requer aprovação do responsável pela infra BV.
+# Documentação: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+# =============================================================================
+
+# Dono padrão: todas as rotas que não tiverem regra específica abaixo
+* @GabrielAderaldo
+
+# Workflows de CI/CD — revisão obrigatória (supply chain)
+.github/workflows/ @GabrielAderaldo
+
+# Terraform (IaC) — mudanças de infra requerem revisão cuidadosa
+terraform/ @GabrielAderaldo
+
+# Compose e scripts de deploy
+compose/ @GabrielAderaldo
+scripts/ @GabrielAderaldo

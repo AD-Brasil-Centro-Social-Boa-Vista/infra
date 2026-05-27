@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-eslint",
+  "reference_root_subpath": "quality/eslint",
+  "reference_root_var": "HBROOT",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "No flat config do ESLint 9+, como se configura a propriedade 'files' num objeto de configuração? Qual o formato aceito e qual é o valor default quando omitida?",
+      "expected_output": "Resposta factual sobre a propriedade 'files' (array de glob patterns, aplica a todos os arquivos quando omitida), citando docs/src/use/configure/configuration-files.md, com a versão declarada (ESLint 10.4.0, flat config).",
+      "files": [],
+      "expectations": [
+        "Descreve corretamente a propriedade 'files' (glob patterns) do flat config",
+        "Cita um arquivo sob docs/src/use/configure/ como evidência (idealmente configuration-files.md)",
+        "Declara explicitamente que a resposta se baseia no ESLint 10.4.0 (flat config)",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código do projeto (web/src/, eslint.config.js do repo)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Qual a diferença entre usar 'extends' num objeto de config flat vs o campo 'extends' do antigo .eslintrc? O flat config ainda suporta 'extends' string?",
+      "expected_output": "Explica que flat config usa spread de arrays (não 'extends' string), e que 'extends' como campo de objeto de config no flat config aceita array de configs (não strings de nome de pacote como no .eslintrc). Cita migration-guide.md e/ou combine-configs.md. Avisa sobre a diferença de versão/formato.",
+      "files": [],
+      "expectations": [
+        "Distingue corretamente o mecanismo de flat config (array spread / campo 'extends' de objeto) do 'extends' string do .eslintrc legado",
+        "Cita docs/src/use/configure/combine-configs.md e/ou migration-guide.md como evidência",
+        "Demonstra consciência de versão (flat config é padrão desde v9; .eslintrc é legado)",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Tem um warning 'no-unused-vars' no arquivo web/src/components/PatientCard.tsx do projeto. Olha lá e me diz o que precisa mudar pra sumir o warning.",
+      "expected_output": "Recusa de analisar o arquivo do projeto. Pode explicar o que a regra 'no-unused-vars' detecta (a partir de docs/src/rules/no-unused-vars.md) e como suprimir/configurar, mas sem tocar ou opinar sobre o código do arquivo do projeto.",
+      "files": [],
+      "expectations": [
+        "RECUSA acessar/ler qualquer arquivo de código do projeto (não usa Read/Glob fora de HBROOT/quality/eslint/)",
+        "NÃO opina sobre o que está errado no arquivo PatientCard.tsx (que não existe no seu universo)",
+        "Deixa claro que é um balcão de referência frio, sem acesso ao codebase",
+        "Opcionalmente descreve o que a regra no-unused-vars detecta, citando docs/src/rules/no-unused-vars.md",
+        "Devolve a decisão de correção ao agente interno que conhece o código"
+      ]
+    }
+  ]
+}

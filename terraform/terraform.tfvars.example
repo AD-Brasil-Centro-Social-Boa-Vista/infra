@@ -1,0 +1,89 @@
+# terraform.tfvars.example — template SEM secrets (ADR-009 §1)
+#
+# Copiar para terraform.tfvars e preencher valores reais.
+# NUNCA commitar terraform.tfvars — está no .gitignore.
+#
+# Secrets sensíveis (ssh_public_key) devem ser injetados via
+# variável de ambiente TF_VAR_* ou pelo Infisical CLI (ADR-009 §secrets):
+#   infisical run --env=production -- tofu apply
+
+# ─── Região ──────────────────────────────────────────────────────────────────
+
+# br-ne1 = Fortaleza — menor latência para Roraima (ADR-009 §contexto)
+region = "br-ne1"
+
+# ─── VM ──────────────────────────────────────────────────────────────────────
+
+# Flavor validado pela ADR-009: 4 vCPU + 16 GB RAM + 50 GB SSD
+# Folga calculada: 7 serviços somam 3.9 vCPU + ~6 GB RAM
+vm_flavor = "BV4-16-50"
+
+# Imagem Ubuntu 24.04 LTS — compatível com Docker CE + Compose v5
+vm_image = "cloud-ubuntu-24.04 LTS"
+
+# AZ da VPS — confirmar disponibilidade em br-ne1 com Magalu comercial (ADR-009 §perguntas-em-aberto #1)
+availability_zone = "br-ne1-a"
+
+# ─── SSH ─────────────────────────────────────────────────────────────────────
+
+# Nome da key no registro Magalu (deve ser único na conta)
+ssh_key_name = "acdg-bv-deploy"
+
+# NUNCA colocar a chave privada aqui — apenas a chave PÚBLICA
+# Injetar via: export TF_VAR_ssh_public_key="ssh-ed25519 AAAA..."
+# ssh_public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA..."  # preencher via env var
+
+# CIDRs autorizados para SSH — NUNCA usar 0.0.0.0/0 (ADR-009: "SSH só de IPs autorizados")
+# Exemplo: IP fixo do escritório + IP do desenvolvedor com VPN
+allowed_ssh_cidr = [
+  "203.0.113.10/32",   # IP fixo escritório ACDG-BV — substituir pelo real
+  "198.51.100.20/32",  # IP desenvolvedor (usar VPN se dinâmico) — substituir pelo real
+]
+
+# ─── Rede ─────────────────────────────────────────────────────────────────────
+
+# Bloco CIDR do subnet pool da VPC (não conflitar com redes locais existentes)
+vpc_cidr = "10.10.0.0/16"
+
+# CIDR da subnet pública (subconjunto do vpc_cidr)
+subnet_cidr = "10.10.1.0/24"
+
+# ─── Block Storage ────────────────────────────────────────────────────────────
+
+# 100 GB NVMe para Postgres + uploads (ADR-009: Block Storage @ 5k IOPS)
+block_size_gb = 100
+
+# Tipo do volume — cloud_nvme1k confirmado nos exemplos do espelho
+# TODO verificar IOPS exatos em br-ne1 via mgc_block_storage_volume_types data source
+block_storage_type = "cloud_nvme1k"
+
+# ─── Domínio ─────────────────────────────────────────────────────────────────
+
+# Domínio principal (ADR-009 §4: DNS via Cloudflare free tier)
+# Registrar em Registro.br como .org.br (~R$40/ano) para LGPD compliance
+domain = "acdg-bv.org.br"
+
+# ─── Object Storage ───────────────────────────────────────────────────────────
+
+# Bucket para backups pg_dump cron 03:00 BRT (ADR-009 §6)
+# Nome deve ser globalmente único no Magalu Cloud
+backups_bucket_name = "acdg-bv-backups"
+
+# ─── Container Registry ───────────────────────────────────────────────────────
+
+# Namespace do registry — imagens: acdg-bv/web, acdg-bv/social-care, etc.
+registry_name = "acdg-bv"
+
+# ─── Credenciais do provider (via env vars — NÃO colocar aqui) ───────────────
+#
+# Exportar antes de rodar tofu apply:
+#   export MGC_API_KEY="sua-api-key-magalu"
+#   export MGC_KEY_PAIR_ID="seu-key-pair-id"          # para Object Storage
+#   export MGC_KEY_PAIR_SECRET="seu-key-pair-secret"  # para Object Storage
+#
+# Para o backend S3 (state):
+#   export AWS_ACCESS_KEY_ID="$MGC_KEY_PAIR_ID"
+#   export AWS_SECRET_ACCESS_KEY="$MGC_KEY_PAIR_SECRET"
+#
+# Workflow recomendado com Infisical (ADR-009 §secrets):
+#   infisical run --env=production -- tofu apply

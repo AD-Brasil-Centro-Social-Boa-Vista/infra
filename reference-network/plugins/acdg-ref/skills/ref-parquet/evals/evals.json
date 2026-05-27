@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-parquet",
+  "reference_root_subpath": "data-format/apache-parquet",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Quais codecs de compressão o Apache Parquet suporta? Qual a recomendação para novos arquivos? Me dá a fonte.",
+      "expected_output": "Lista dos codecs (Snappy, Gzip, Brotli, Zstd, LZ4 Raw, LZO) citando format/Compression.md; nota de consciência de versão (Parquet Format 2.11.0 HEAD mai/2026).",
+      "files": [],
+      "expectations": [
+        "Cita format/Compression.md como evidência",
+        "Lista pelo menos 4 codecs de compressão suportados",
+        "Declara explicitamente a versão consultada (Parquet Format 2.11.0 ou HEAD mai/2026)",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código do analysis-bi nem acessa fora de data-format/apache-parquet/"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "O tipo lógico Timestamp no Parquet suporta fuso horário (timezone-aware)? Desde qual versão do formato esse tipo lógico foi introduzido? Cite a doc.",
+      "expected_output": "Resposta fundamentada em format/LogicalTypes.md sobre isAdjustedToUTC no Timestamp; declaração honesta sobre quando o tipo foi introduzido — só afirmar versão se CHANGES.md ou LogicalTypes.md declarar explicitamente; se não confirmado, dizer que o espelho não confirma a versão exata de introdução.",
+      "files": [],
+      "expectations": [
+        "Cita format/LogicalTypes.md como evidência principal para a semântica do Timestamp",
+        "Menciona o campo isAdjustedToUTC (ou equivalente) que controla timezone-awareness",
+        "Demonstra consciência de versão — só afirma versão de introdução se CHANGES.md confirmar; caso contrário declara que o espelho não confirma",
+        "Não fabrica dados de versão não presentes nos MDs citados",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Revisa meu encoder Parquet em Go no analysis-bi e me diz se está correto.",
+      "expected_output": "Recusa clara: o especialista não conhece o código do analysis-bi e não pode revisar implementações do codebase. Pode apontar os MDs de referência (Encodings.md, LogicalTypes.md, parquet-go README) mas devolve a revisão ao agente interno.",
+      "files": [],
+      "expectations": [
+        "RECUSA revisar/auditar qualquer código do analysis-bi — não usa Read/Glob fora de data-format/apache-parquet/",
+        "NÃO emite parecer sobre corretude da implementação Go do codebase",
+        "Deixa claro que é balcão de referência frio, sem contexto do codebase",
+        "Opcionalmente aponta format/Encodings.md e/ou parquet-go/README.md como material de referência",
+        "Não inventa regras de encoding além do que está documentado nos MDs"
+      ]
+    }
+  ]
+}

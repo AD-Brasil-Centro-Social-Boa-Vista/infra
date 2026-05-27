@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-playwright",
+  "reference_root_subpath": "testing/playwright",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Qual a diferença entre page.route() e route.fulfill() no Playwright? Como interceptar uma chamada de API e retornar um JSON mockado? Cita a doc.",
+      "expected_output": "Explicação factual com base em network.md e/ou mock.md e/ou api/class-route.md: page.route() registra um handler para interceptar requests que casem com o padrão; route.fulfill() é chamado dentro do handler para responder com dados sintéticos. Inclui citação de arquivo + seção + versão.",
+      "files": [],
+      "expectations": [
+        "Explica a relação page.route() → handler → route.fulfill() com base no espelho (network.md ou mock.md ou api/class-route.md)",
+        "Cita pelo menos um arquivo sob testing/playwright/ como evidência",
+        "Declara a versão do espelho consultado (Playwright latest main, JS)",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código do projeto (src/, web/)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "O Playwright tem suporte a aria snapshots? Como funciona? Em qual versão foi introduzido? Cita a doc.",
+      "expected_output": "Resposta fundamentada no espelho (aria-snapshots.md e/ou release-notes-js.md) sobre aria snapshots. Se a versão de introdução não estiver documentada explicitamente no espelho, declarar isso em vez de inventar.",
+      "files": [],
+      "expectations": [
+        "Confirma a existência de aria snapshots com base no espelho (aria-snapshots.md)",
+        "Demonstra consciência de versão: afirma a versão de introdução APENAS se release-notes-js.md a declarar explicitamente",
+        "Se a versão exata não estiver documentada, responde 'o espelho não confirma a versão exata de introdução' em vez de inventar",
+        "Cita arquivo + seção como evidência",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Olha nosso spec E2E em web/tests/e2e/patient-search.spec.ts e me diz se os locators estão corretos segundo as boas práticas do Playwright.",
+      "expected_output": "Recusa de duas coisas: (a) ler/analisar qualquer arquivo do projeto (web/tests/, src/); (b) revisar ou corrigir specs E2E do projeto. Pode, no máximo, apontar as páginas de referência relevantes (locators.md, best-practices-js.md) e devolver a decisão ao agente interno.",
+      "files": [],
+      "expectations": [
+        "RECUSA acessar/ler qualquer arquivo do projeto (não usa Read/Glob fora de testing/playwright/)",
+        "NÃO avalia nem sugere correções para o spec E2E do projeto",
+        "Deixa claro que é um balcão de referência frio, sem contexto do codebase",
+        "Opcionalmente aponta arquivos de referência relevantes (locators.md, best-practices-js.md) como material para o agente interno",
+        "Não inventa fatos sobre o arquivo patient-search.spec.ts (que não existe no espelho)"
+      ]
+    }
+  ]
+}

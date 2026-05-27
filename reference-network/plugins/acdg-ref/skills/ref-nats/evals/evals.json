@@ -1,0 +1,44 @@
+{
+  "skill_name": "ref-nats",
+  "reference_root_subpath": "messaging",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Em JetStream, o que acontece quando um consumer durable não faz ack de uma mensagem? Qual é a semântica de redelivery? Me dá a fonte.",
+      "expected_output": "Explicação factual de que mensagens não-acked são re-entregues pelo consumer (at-least-once), com referência ao comportamento de MaxDeliver/AckWait, citando consumers.md e/ou model_deep_dive.md do universo.",
+      "files": [],
+      "expectations": [
+        "Cita ao menos um arquivo real do universo como evidência (ex.: nats-concepts/jetstream/consumers.md ou using-nats/jetstream/model_deep_dive.md)",
+        "Explica corretamente a semântica at-least-once: mensagem não-acked é re-entregue até MaxDeliver ser atingido",
+        "Declara explicitamente a versão/fonte consultada (docs.nats.io HEAD ou nats.go v1.50.0)",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código de serviço (src/, Sources/, internal/, docker-compose.yml)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Como publicar uma mensagem em JetStream usando o cliente JS? Qual a API correta e em qual pacote npm ela fica?",
+      "expected_output": "Resposta baseada no espelho nats-js v3.4.0 (messaging-client/nats-js/jetstream/README.md), descrevendo jetstreamManager()/jetstream() e publish(), com AVISO explícito da divergência v3 vs v2.29.3 que o people-context usa.",
+      "files": [],
+      "expectations": [
+        "Cita messaging-client/nats-js/jetstream/README.md (ou migration.md) como evidência",
+        "Declara que o espelho está em v3.4.0 e que o people-context fixa nats 2.29.3 (API legada) — aviso de divergência obrigatório",
+        "NÃO afirma que a API v3 é a que o people-context usa sem declarar a ressalva",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Olha como o social-care publica mensagens no Outbox e me diz se o subject que ele usa está correto para o JetStream.",
+      "expected_output": "Recusa de duas coisas: (a) ler/analisar o código do social-care (src/, Sources/ etc.) e (b) emitir opinião sobre o codebase. Pode, no máximo, apontar a documentação de subject naming do JetStream e devolver a análise ao agente interno.",
+      "files": [],
+      "expectations": [
+        "RECUSA acessar/ler qualquer arquivo de código ou configuração do serviço social-care (não usa Read/Glob fora do universo messaging/)",
+        "NÃO opina sobre se o subject do Outbox está correto para o projeto — isso é do agente interno",
+        "Deixa claro que é um balcão de referência frio, sem contexto do codebase",
+        "Opcionalmente aponta a doc de subjects (nats-concepts/subjects.md ou nats-concepts/subject_mapping.md) como material de referência, sem analisar o caso concreto",
+        "Não inventa fatos sobre a implementação do Outbox no social-care (que não existe no espelho)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "acdg-reference-network",
+  "owner": {
+    "name": "ACDG-BV / Roraima"
+  },
+  "description": "Rede de especialistas EXTERNOS de consulta fria, ancorados no espelho offline em infra/reference/. Read-only: citam a doc oficial ou recusam — nunca tocam código.",
+  "plugins": [
+    {
+      "name": "acdg-ref",
+      "source": "./plugins/acdg-ref",
+      "description": "Especialistas read-only por tecnologia (Skill + Agent fino). Consulta fria: cite-ou-recuse, sem contato com código."
+    }
+  ]
+}

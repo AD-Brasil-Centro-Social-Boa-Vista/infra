@@ -1,0 +1,46 @@
+# =============================================================================
+# .gitignore — repo `infra` (PÚBLICO/MIT). NADA de secret ou dado pode vazar.
+# =============================================================================
+
+# --- SECRETS (NUNCA commitar) ---
+secrets/*
+!secrets/README.md
+/etc/acdg-secrets/
+*.secret
+*.key
+*.pem
+# env reais (só *.example entram)
+.env
+*.env
+!*.env.example
+
+# --- Espelho offline de docs (LOCAL-ONLY, ~700MB: mirror + zip FHIR) ---
+reference/
+.evals-workspace/
+
+# --- Coleção de skills pré-existente (1.2GB, projeto à parte) — NÃO entra no repo de deploy ---
+skills_base/
+
+# --- Terraform (state + tfvars reais contêm credenciais/IDs) ---
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.tfvars
+!terraform/*.tfvars.example
+terraform/crash.log
+terraform/crash.*.log
+
+# --- Dados de runtime / volumes locais ---
+data/
+**/data/
+*.dump
+*.sql.gz
+
+# --- Lixo de SO / editor ---
+.DS_Store
+Thumbs.db
+*.swp
+*.log
+.idea/
+.vscode/

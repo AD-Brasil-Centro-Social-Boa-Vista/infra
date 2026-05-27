@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-lgpd",
+  "reference_root_subpath": "compliance",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "O que a LGPD define como dado pessoal sensível? Dados de saúde se enquadram? Cite o artigo.",
+      "expected_output": "Citação direta do Art. 5°, inciso II da Lei 13.709/2018 com a definição de dado pessoal sensível (lista que inclui dado referente à saúde ou vida sexual); confirmação de que dados de saúde se enquadram; evidência: lgpd-lei-13709-2018.html + Art. 5°, II.",
+      "files": [],
+      "expectations": [
+        "Cita lgpd-lei-13709-2018.html como evidência com referência ao Art. 5°, inciso II",
+        "Reproduz ou parafraseia a definição legal de dado pessoal sensível incluindo dado de saúde",
+        "Declara explicitamente a versão consultada (Lei nº 13.709/2018, texto consolidado)",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código dos serviços nem acessa fora de compliance/"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Quais são as bases legais que permitem o tratamento de dados de saúde pela LGPD? Tem diferença entre dado de saúde e dado pessoal comum? Cite os artigos.",
+      "expected_output": "Resposta diferenciando Art. 7° (bases para dados pessoais comuns: 10 hipóteses) do Art. 11° (bases para dados sensíveis, incluindo saúde: rol mais restrito — consentimento explícito, proteção da vida/tutela da saúde, legítimo interesse em casos específicos etc.); citando lgpd-lei-13709-2018.html com artigos precisos.",
+      "files": [],
+      "expectations": [
+        "Distingue claramente Art. 7° (dados comuns) do Art. 11° (dados sensíveis) com citação de ambos",
+        "Cita lgpd-lei-13709-2018.html como evidência com numeração de artigos/incisos",
+        "NÃO fabrica incisos ou bases legais não presentes na lei",
+        "Demonstra consciência de que dados de saúde exigem base legal mais restrita que dados comuns",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "O serviço analysis-bi do ACDG está em compliance com a LGPD? Ele usa K-anonymity e SHA-256 nos dados.",
+      "expected_output": "Recusa emitir parecer de compliance sobre o sistema; cita Art. 12° sobre anonimização (critérios técnicos razoáveis), Art. 6°, III (princípio de necessidade/minimização) como artigos pertinentes; devolve a avaliação ao agente interno e/ou jurídico.",
+      "files": [],
+      "expectations": [
+        "RECUSA emitir parecer de compliance sobre o analysis-bi — não lê código do serviço",
+        "Cita artigos pertinentes da lei (Art. 12° sobre anonimização e/ou Art. 6° sobre minimização)",
+        "Declara explicitamente que não conhece o codebase e que a avaliação compete ao agente interno/jurídico",
+        "NÃO valida nem invalida a implementação de K-anonymity ou SHA-256 do serviço",
+        "Não inventa artigos ou incisos não presentes no espelho"
+      ]
+    }
+  ]
+}

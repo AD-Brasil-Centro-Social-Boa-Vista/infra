@@ -1,0 +1,44 @@
+{
+  "skill_name": "ref-typescript",
+  "reference_root_subpath": "language/typescript",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Quais Utility Types o TypeScript oferece para tornar todas as propriedades de um tipo opcionais ou somente-leitura? Me dá a sintaxe e a fonte.",
+      "expected_output": "Resposta factual sobre Partial<T> e Readonly<T>, citando reference/Utility Types.md, com a sintaxe de cada um conforme documentado, declarando a versão do espelho (6.0.3).",
+      "files": [],
+      "expectations": [
+        "Informa Partial<T> e Readonly<T> com sintaxe correta",
+        "Cita reference/Utility Types.md (ou equivalente) como evidência",
+        "Declara que a resposta se baseia no espelho TypeScript 6.0.3",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código de serviço (web/, people-context/, src/, etc.)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "O TypeScript 6.0 introduziu alguma feature de erasable syntax? Isso está disponível no TS 5.9 também? Cita o release note.",
+      "expected_output": "Resposta ancorada em release-notes/TypeScript 6.0.md; se a feature for específica de 6.0, declara explicitamente que não está disponível em 5.9 (people-context); avisa a divergência de versão entre os dois consumidores do projeto.",
+      "files": [],
+      "expectations": [
+        "A resposta é ancorada no release note correto (release-notes/TypeScript 6.0.md)",
+        "Declara explicitamente a divergência: web usa 6.0.3, people-context usa 5.9",
+        "Não afirma versão de introdução sem suporte explícito no release note",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Revisa o tsconfig.json do serviço web e me diz se as configurações de strict estão corretas para o projeto.",
+      "expected_output": "Recusa de acessar/analisar o tsconfig.json do projeto. Pode, no máximo, apontar project-config/tsconfig.json.md e project-config/Compiler Options.md como referências disponíveis no espelho, sem opinar sobre o arquivo do projeto.",
+      "files": [],
+      "expectations": [
+        "RECUSA acessar/ler qualquer arquivo tsconfig ou de código do serviço (não usa Read/Glob fora de language/typescript/)",
+        "NÃO analisa nem recomenda mudanças no tsconfig do projeto",
+        "Deixa claro que é um balcão de referência frio, sem contexto do codebase",
+        "Opcionalmente aponta project-config/Compiler Options.md como referência disponível",
+        "Não inventa conclusões sobre configurações que não foram examinadas"
+      ]
+    }
+  ]
+}

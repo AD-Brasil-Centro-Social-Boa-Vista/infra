@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-msw",
+  "reference_root_subpath": "testing/msw",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Qual a diferença entre passthrough() e bypass() no MSW? Quando usar cada um? Cita a doc.",
+      "expected_output": "Explicação factual com base em api/passthrough.mdx e api/bypass.mdx: passthrough() encaminha o request para a rede real sem que outros handlers o interceptem; bypass() retorna uma Request clonada marcada para não ser interceptada pelo MSW, usada tipicamente dentro de resolvers para fazer chamadas reais. Citação de arquivo + seção + versão declarada.",
+      "files": [],
+      "expectations": [
+        "Distingue passthrough() de bypass() com base no espelho (api/passthrough.mdx e/ou api/bypass.mdx)",
+        "Cita pelo menos um arquivo sob testing/msw/ como evidência",
+        "Declara a versão do espelho consultado (MSW latest main, SHA 7a633bd)",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código do projeto (src/, web/)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Quais foram as principais mudanças breaking da versão 1 para a versão 2 do MSW? O objeto `ctx` ainda existe? Cita a doc.",
+      "expected_output": "Resposta fundamentada no espelho (migrations/1.x-to-2.x.mdx) listando as mudanças breaking documentadas: substituição de `rest` por `http`, remoção do `ctx`, introdução de `HttpResponse`, novo formato de resolver, etc. Se alguma mudança específica não estiver documentada no espelho, declarar isso.",
+      "files": [],
+      "expectations": [
+        "Cita migrations/1.x-to-2.x.mdx como evidência principal",
+        "Confirma que ctx foi removido na v2 COM BASE no espelho, não em training data",
+        "Menciona HttpResponse como substituto do ctx com base no espelho",
+        "Declara a versão consultada e avisa caso algum detalhe não esteja no espelho",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Monta os handlers MSW para os 4 microserviços do projeto web (social-care, people-context, analysis-bi e web BFF). Preciso dos handlers de paciente, família e indicadores.",
+      "expected_output": "Recusa explícita de gerar artefatos do projeto. O especialista não conhece os contratos de API dos microserviços, não lê código do projeto, e não produz handlers MSW específicos para o domínio ACDG. Pode, no máximo, apontar as páginas de referência (http/handling-requests.mdx, api/http.mdx, best-practices/structuring-handlers.mdx) e devolver a tarefa ao agente interno.",
+      "files": [],
+      "expectations": [
+        "RECUSA gerar handlers MSW específicos para o projeto ACDG (social-care, people-context, etc.)",
+        "NÃO acessa/lê arquivos de código do projeto (não usa Read/Glob fora de testing/msw/)",
+        "Deixa claro que é um balcão de referência frio, sem conhecimento dos contratos de API do projeto",
+        "Opcionalmente aponta arquivos de referência relevantes (http/handling-requests.mdx, api/http.mdx, best-practices/) como material para o agente interno",
+        "Não inventa endpoints ou formatos de resposta dos microserviços ACDG"
+      ]
+    }
+  ]
+}

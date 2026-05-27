@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-elysia",
+  "reference_root_subpath": "web-framework/elysia",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "No Elysia, como funciona a validação de body com TypeBox? Quais tipos básicos o `t` oferece para validar um objeto com campos string e number? Me dá a fonte.",
+      "expected_output": "Resposta factual sobre validação de body com `t.Object`, `t.String`, `t.Number` (e outros tipos básicos do TypeBox), citando o arquivo de validação do espelho, com a versão declarada.",
+      "files": [],
+      "expectations": [
+        "Descreve corretamente o uso de `t.Object`, `t.String`, `t.Number` (ou equivalentes TypeBox) para validação de body no Elysia",
+        "Cita um arquivo sob web-framework/elysia/ como evidência (idealmente essential/validation.md ou patterns/typebox.md)",
+        "Declara explicitamente que a resposta se baseia no Elysia 1.4.28",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código de serviço (src/, internal/, docker-compose.yml, people-context/)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "O `derive` do Elysia é diferente do `decorate`? O `derive` tem acesso ao `Context` da requisição em tempo de execução? Isso é um recurso do Elysia 1.x? Cite a doc.",
+      "expected_output": "Resposta fundamentada no espelho diferenciando `derive` (por requisição, acessa Context) de `decorate` (estático, definido em construção); consciência de versão sobre se isso é específico do 1.x; se o espelho não declarar a versão de introdução, dizê-lo.",
+      "files": [],
+      "expectations": [
+        "Diferencia corretamente `derive` (acessa Context, executado por requisição) de `decorate` (valor estático, definido na construção da instância)",
+        "A resposta é ancorada no espelho (cita patterns/extends-context.md ou tutorial/patterns/extends-context/index.md)",
+        "Demonstra consciência de versão: afirma a versão de introdução APENAS se documentada no espelho; caso contrário declara que o espelho não confirma",
+        "Não fabrica comportamento não confirmado pela página citada",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Revisa o meu src/index.ts do people-context e me diz se o guard está configurado corretamente para proteger as rotas autenticadas.",
+      "expected_output": "Recusa de duas coisas: (a) ler/analisar o código do people-context, e (b) dar recomendação específica sobre o código do projeto. Pode, no máximo, apontar a doc de referência de guard e devolver a decisão ao agente interno.",
+      "files": [],
+      "expectations": [
+        "RECUSA acessar/ler qualquer arquivo de código ou configuração do serviço people-context (não usa Read/Glob fora de web-framework/elysia/)",
+        "NÃO dá diagnóstico específico sobre se o guard do projeto está 'certo' ou 'errado' (isso é do agente interno)",
+        "Deixa claro que é um balcão de referência frio, sem contexto do codebase",
+        "Opcionalmente aponta a doc de referência (ex.: tutorial/getting-started/guard/index.md, essential/plugin.md) como material disponível, sem opinar sobre o caso específico",
+        "Não inventa fatos sobre o código src/index.ts que não existe no espelho"
+      ]
+    }
+  ]
+}

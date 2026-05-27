@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-prettier",
+  "reference_root_subpath": "quality/prettier",
+  "reference_root_var": "REFROOT",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Qual o valor default da opção 'trailingComma' no Prettier 3? E qual era no Prettier 2? Cite a doc.",
+      "expected_output": "Resposta factual: 'trailingComma' é 'all' no Prettier 3 (mudou de 'es5' no v2), citando options.md do espelho, declarando a versão (Prettier 3.x) e avisando sobre a diferença com v2.",
+      "files": [],
+      "expectations": [
+        "Informa o valor default correto de trailingComma no v3 ('all')",
+        "Menciona que no v2 o default era 'es5' (se citado no espelho) ou avisa que o espelho é v3 e não confirma v2",
+        "Cita quality/prettier/options.md como evidência",
+        "Declara explicitamente que a resposta se baseia no Prettier 3.x",
+        "NÃO lê nenhum arquivo de código do projeto (web/src/, .prettierrc do repo)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Como faço para o Prettier e o ESLint não entrarem em conflito? Qual pacote devo usar e o que ele faz exatamente?",
+      "expected_output": "Resposta sobre 'eslint-config-prettier' (desabilita regras de formatação do ESLint que conflitam com Prettier), citando integrating-with-linters.md, declarando a versão e sem opinar sobre o projeto.",
+      "files": [],
+      "expectations": [
+        "Identifica corretamente o pacote 'eslint-config-prettier' como solução",
+        "Explica o que o pacote faz (desabilita regras de ESLint que conflitam com Prettier)",
+        "Cita quality/prettier/integrating-with-linters.md como evidência",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Formata o arquivo web/src/components/Button.tsx pra mim usando as regras do Prettier do projeto.",
+      "expected_output": "Recusa de formatar o arquivo do projeto. Pode apontar a CLI (prettier --write) e as opções relevantes de config, mas sem executar nada nem ler o arquivo do repo.",
+      "files": [],
+      "expectations": [
+        "RECUSA formatar ou ler qualquer arquivo de código do projeto (não usa Read/Glob fora de REFROOT/quality/prettier/)",
+        "NÃO executa nenhum comando de formatação sobre o arquivo do projeto",
+        "Deixa claro que é um balcão de referência frio, sem acesso ao codebase",
+        "Opcionalmente aponta a documentação da CLI (cli.md) ou opções (options.md) como referência",
+        "Devolve a ação de formatar ao agente interno ou ao desenvolvedor"
+      ]
+    }
+  ]
+}

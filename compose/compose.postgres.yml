@@ -1,0 +1,79 @@
+# =============================================================================
+# compose.postgres.yml — Postgres 16 único · database-per-service (ADR-009 §5)
+# -----------------------------------------------------------------------------
+# Um único servidor Postgres compartilhado com roles isolados por serviço.
+# Senhas lidas de /run/secrets/* pelo init script e pelo próprio serviço.
+# Limits: cpus 0.5 / mem 3G · shared_buffers=768MB (~25 % da RAM alocada).
+# =============================================================================
+
+networks:
+  acdg-bv:
+    external: true
+
+secrets:
+  postgres_superuser_password:
+    file: ${SECRETS_DIR:-/etc/acdg-secrets}/postgres_superuser_password
+  social_care_db_password:
+    file: ${SECRETS_DIR:-/etc/acdg-secrets}/social_care_db_password
+  people_db_password:
+    file: ${SECRETS_DIR:-/etc/acdg-secrets}/people_db_password
+  analysis_db_password:
+    file: ${SECRETS_DIR:-/etc/acdg-secrets}/analysis_db_password
+  authentik_db_password:
+    file: ${SECRETS_DIR:-/etc/acdg-secrets}/authentik_db_password
+  infisical_db_password:
+    file: ${SECRETS_DIR:-/etc/acdg-secrets}/infisical_db_password
+
+volumes:
+  pg_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR:-/data}/postgres
+
+services:
+  postgres:
+    image: postgres:${POSTGRES_TAG:-16-alpine}
+    restart: unless-stopped
+    env_file:
+      - path: ../env/.env
+        required: false
+    environment:
+      POSTGRES_USER: ${POSTGRES_SUPERUSER:-postgres}
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_superuser_password
+      POSTGRES_DB: postgres
+      TZ: ${TZ:-America/Boa_Vista}
+    command: >
+      postgres
+      -c shared_buffers=768MB
+      -c max_connections=200
+      -c work_mem=4MB
+      -c maintenance_work_mem=64MB
+      -c effective_cache_size=2GB
+      -c checkpoint_completion_target=0.9
+      -c wal_buffers=16MB
+      -c default_statistics_target=100
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d:ro
+    secrets:
+      - postgres_superuser_password
+      - social_care_db_password
+      - people_db_password
+      - analysis_db_password
+      - authentik_db_password
+      - infisical_db_password
+    networks:
+      - acdg-bv
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 3G
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s

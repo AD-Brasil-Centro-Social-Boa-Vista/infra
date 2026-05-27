@@ -1,0 +1,57 @@
+# =============================================================================
+# compose.social-care.yml — Swift/Vapor · fonte de verdade + audit trail (ADR-009)
+# -----------------------------------------------------------------------------
+# Porta interna 8080; exposta via Caddy em api.<DOMAIN>.
+# Outbox relay publica eventos para NATS JetStream (→ people-context, analysis-bi).
+# actorId derivado de JWT.sub validado contra JWKS do Authentik (ADR-023).
+# Limits: cpus 1.0 / mem 1G.
+# Healthcheck: GET /health:8080 (endpoint definido no Dockerfile do svc-social-care).
+# =============================================================================
+
+networks:
+  acdg-bv:
+    external: true
+
+secrets:
+  social_care_db_password:
+    file: ${SECRETS_DIR:-/etc/acdg-secrets}/social_care_db_password
+
+services:
+  social-care:
+    image: ${REGISTRY:-ghcr.io/acdgbrasil}/svc-social-care:${SC_TAG:-latest}
+    restart: unless-stopped
+    env_file:
+      - path: ../env/.env
+        required: false
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_PORT: "5432"
+      DATABASE_NAME: social_care
+      DATABASE_USER: social_care
+      DATABASE_PASSWORD_FILE: /run/secrets/social_care_db_password
+      NATS_URL: nats://nats:4222
+      OIDC_ISSUER: ${OIDC_ISSUER:-}
+      OIDC_JWKS_URL: ${OIDC_JWKS_URL:-}
+      TZ: ${TZ:-America/Boa_Vista}
+    expose:
+      - "8080"
+    secrets:
+      - social_care_db_password
+    networks:
+      - acdg-bv
+    depends_on:
+      postgres:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 40s

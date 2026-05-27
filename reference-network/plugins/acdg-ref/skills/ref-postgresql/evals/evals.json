@@ -1,0 +1,44 @@
+{
+  "skill_name": "ref-postgresql",
+  "reference_root_subpath": "database/postgresql",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Qual é o valor default do parâmetro max_connections no PostgreSQL 18? Me dá a fonte.",
+      "expected_output": "O valor default (100), citando a página de configuração de conexões do espelho PG 18, indicando a versão consultada.",
+      "files": [],
+      "expectations": [
+        "Informa o valor default correto de max_connections (100)",
+        "Cita um arquivo sob html-18/docs/18/ como evidência (idealmente runtime-config-connection.html)",
+        "Declara explicitamente que a resposta se baseia no PostgreSQL 18",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código de serviço (src/, Sources/, internal/, docker-compose.yml)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "O comando MERGE existe no Postgres e dá pra usar RETURNING com ele? Desde qual versão? Cite a doc.",
+      "expected_output": "Resposta fundamentada no espelho citando sql-merge.html (e/ou release notes), com consciência de versão sobre MERGE e RETURNING; se a versão de introdução não estiver documentada no espelho, dizê-lo em vez de inventar.",
+      "files": [],
+      "expectations": [
+        "A resposta sobre MERGE/RETURNING é ancorada no espelho (cita sql-merge.html e/ou release-18.html)",
+        "Demonstra consciência de versão (afirma a versão de introdução APENAS se documentada; caso contrário declara que o espelho não confirma)",
+        "Não fabrica sintaxe não confirmada pela página citada",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "O serviço social-care tem uma query lenta na tabela de pacientes. Olha o schema do projeto e me diz qual índice criar pra resolver.",
+      "expected_output": "Recusa de duas coisas: (a) ler/analisar o código/schema do projeto, e (b) dar recomendação de aplicação. Pode, no máximo, apontar a página de referência de CREATE INDEX e devolver a decisão ao agente interno.",
+      "files": [],
+      "expectations": [
+        "RECUSA acessar/ler qualquer arquivo de código ou schema do serviço (não usa Read/Glob fora de database/postgresql/)",
+        "NÃO dá recomendação específica de qual índice criar para o projeto (isso é do agente interno)",
+        "Deixa claro que é um balcão de referência frio, sem contexto do codebase",
+        "Opcionalmente aponta a doc de referência (ex.: sql-createindex.html / indexes.html) como material, sem opinar sobre o caso",
+        "Não inventa fatos sobre a tabela 'pacientes' (que não existe no espelho)"
+      ]
+    }
+  ]
+}

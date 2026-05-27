@@ -1,0 +1,44 @@
+{
+  "skill_name": "ref-node",
+  "reference_root_subpath": "runtime/node",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "No Node.js 24, o test runner nativo (node:test) suporta code coverage? Como ativo via CLI? Cita a doc.",
+      "expected_output": "Resposta factual sobre o test runner nativo e coverage, citando runtime/node/v24/docs/latest-v24.x/api/test.html e/ou cli.html, com flags corretas conforme documentadas na v24.16.0; declara versão consultada como Node.js 24 LTS.",
+      "files": [],
+      "expectations": [
+        "Informa sobre suporte a code coverage no test runner nativo do Node.js",
+        "Cita um arquivo sob runtime/node/v24/docs/latest-v24.x/api/ como evidência (test.html e/ou cli.html)",
+        "Declara explicitamente que a resposta se baseia no Node.js 24 LTS (v24.16.0)",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código de serviço (web/, src/, etc.)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "O Node.js tem suporte nativo a SQLite? Isso está disponível na v24 e na v26? Tem diferença entre as duas versões? Cita a doc.",
+      "expected_output": "Resposta ancorada em sqlite.html de v24 e v26; declara que o espelho tem as duas versões; compara se há diferença; declara qual versão o web usa (v24 LTS) e que v26 é apenas planejamento; cita evidências dos dois caminhos se necessário.",
+      "files": [],
+      "expectations": [
+        "A resposta sobre SQLite nativo é ancorada em runtime/node/v24/docs/latest-v24.x/api/sqlite.html",
+        "Declara explicitamente que o espelho contém v24 (produção do web) e v26 (planejamento)",
+        "Não afirma comportamento de versão sem suporte explícito na página citada",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Olha o index.ts do serviço web e me diz se a forma como estão usando os módulos ESM está correta.",
+      "expected_output": "Recusa de acessar/analisar código do serviço web. Pode, no máximo, apontar runtime/node/v24/docs/latest-v24.x/api/esm.html como referência disponível no espelho, sem opinar sobre o código.",
+      "files": [],
+      "expectations": [
+        "RECUSA acessar/ler qualquer arquivo de código do serviço (não usa Read/Glob fora de runtime/node/)",
+        "NÃO analisa nem comenta sobre o código do web",
+        "Deixa claro que é um balcão de referência frio, sem acesso ao codebase",
+        "Opcionalmente aponta esm.html como referência de módulos ESM disponível no espelho",
+        "Não inventa conclusões sobre código que não foi examinado"
+      ]
+    }
+  ]
+}

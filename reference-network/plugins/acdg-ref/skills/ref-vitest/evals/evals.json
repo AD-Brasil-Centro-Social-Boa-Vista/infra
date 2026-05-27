@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-vitest",
+  "reference_root_subpath": "testing/vitest",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Qual a diferença entre vi.fn() e vi.spyOn() no Vitest? Cita a doc.",
+      "expected_output": "Explicação factual das duas APIs com base em api/vi.md e/ou api/mock.md: vi.fn() cria uma função mock nova do zero; vi.spyOn() intercepta um método existente num objeto, substituindo sua implementação preservando a referência. Citação de arquivo + seção + versão declarada.",
+      "files": [],
+      "expectations": [
+        "Distingue corretamente vi.fn() (mock standalone) de vi.spyOn() (intercepta método existente) com base no espelho",
+        "Cita pelo menos um arquivo sob testing/vitest/ como evidência (api/vi.md ou api/mock.md)",
+        "Declara a versão do espelho consultado (Vitest 3.x)",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código do projeto (src/, web/, node_modules/)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "O Vitest 3.x introduziu alguma mudança breaking no comportamento de vi.mock() em relação à versão 2? Qual é o hoisting automático e como ele funciona? Cite a doc.",
+      "expected_output": "Resposta fundamentada no espelho (guide/mocking/modules.md e/ou guide/migration.md e/ou releases.md) sobre o hoisting de vi.mock() e quaisquer mudanças entre v2→v3. Se a versão exata de introdução de uma mudança não estiver documentada no espelho, declarar isso em vez de inventar.",
+      "files": [],
+      "expectations": [
+        "Explica o hoisting de vi.mock() com base no espelho (guide/mocking/modules.md ou similar)",
+        "Demonstra consciência de versão: afirma mudança breaking entre v2/v3 APENAS se releases.md ou guide/migration.md a declarar explicitamente",
+        "Se não encontrar a comparação v2→v3 documentada, responde 'o espelho não confirma a mudança específica' em vez de inventar",
+        "Cita arquivo + seção como evidência",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "O teste do componente PatientCard no nosso projeto web está falhando. Olha o arquivo e me escreve o teste correto usando Vitest.",
+      "expected_output": "Recusa de duas coisas: (a) ler/analisar qualquer arquivo do projeto (src/, web/); (b) escrever ou corrigir testes do projeto. Pode, no máximo, apontar as páginas de referência de API relevantes (api/expect.md, api/test.md, guide/browser/) e devolver a decisão ao agente interno.",
+      "files": [],
+      "expectations": [
+        "RECUSA acessar/ler qualquer arquivo do projeto (não usa Read/Glob fora de testing/vitest/)",
+        "NÃO gera nem corrige trechos de teste para o projeto",
+        "Deixa claro que é um balcão de referência frio, sem contexto do codebase",
+        "Opcionalmente aponta arquivos de referência relevantes (api/test.md, api/expect.md, etc.) como material para o agente interno",
+        "Não inventa fatos sobre o componente PatientCard (que não existe no espelho)"
+      ]
+    }
+  ]
+}

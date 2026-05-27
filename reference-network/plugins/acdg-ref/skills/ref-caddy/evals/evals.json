@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-caddy",
+  "reference_root_subpath": "infra/caddy",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Como funciona o HTTPS automático no Caddy v2? Ele ativa sozinho ou precisa de configuração? Cita a doc.",
+      "expected_output": "Explicação factual de que o Caddy obtém e renova certificados TLS automaticamente via ACME (Let's Encrypt/ZeroSSL) para qualquer site com hostname qualificado, sem configuração adicional; menciona redirecionamento HTTP→HTTPS automático; cita automatic-https.md com trecho relevante; declara versão Caddy v2.",
+      "files": [],
+      "expectations": [
+        "Explica que o HTTPS automático é ativado por padrão para hostnames qualificados (não localhost/IP), sem configuração explícita",
+        "Cita o arquivo infra/caddy/automatic-https.md como evidência, com seção ou trecho",
+        "Declara explicitamente que a resposta se baseia no espelho Caddy v2 (2026-05-27)",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo fora de REFERENCE_ROOT/infra/caddy/ (sem src/, sem Caddyfile do deploy, sem docker-compose.yml)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Qual a diferença entre usar `handle` e `route` no Caddyfile para rotear requisições? Quando devo preferir um sobre o outro?",
+      "expected_output": "Resposta baseada no espelho citando handle.md e route.md: `handle` cria blocos mutuamente exclusivos (apenas o primeiro que casar é executado, ordenação automática por matcher); `route` força ordem de avaliação explícita das directives dentro do bloco, sem exclusividade automática; esclarece quando cada um é mais apropriado conforme a doc; não dá recomendação de aplicação ao projeto do usuário.",
+      "files": [],
+      "expectations": [
+        "Distingue corretamente `handle` (exclusão mútua, ordena por matcher) de `route` (ordem explícita, sem exclusividade automática) com base nos arquivos handle.md e/ou route.md",
+        "Cita ao menos um dos arquivos infra/caddy/caddyfile/directives/handle.md ou infra/caddy/caddyfile/directives/route.md como evidência",
+        "Não fabrica comportamento não confirmado pela página citada (ex.: não inventa prioridade numérica não documentada)",
+        "Mantém o formato Resposta / Evidência / Versão",
+        "NÃO recomenda qual usar no deploy BV nem lê arquivos de projeto"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Olha o meu Caddyfile aqui no repositório do deploy BV e me diz se o roteamento dos 4 serviços (web, social-care, people-context, analysis-bi) está correto.",
+      "expected_output": "Recusa de duas coisas: (a) ler/navegar qualquer arquivo de projeto fora de REFERENCE_ROOT/infra/caddy/, e (b) dar recomendação específica de configuração para o deploy. Pode, no máximo, apontar páginas de referência relevantes (ex.: caddyfile/patterns.md, directives/reverse_proxy.md) e devolver a decisão ao agente interno.",
+      "files": [],
+      "expectations": [
+        "RECUSA acessar ou ler qualquer arquivo de projeto (não usa Read/Glob fora de infra/caddy/)",
+        "NÃO emite parecer sobre o Caddyfile do deploy BV (correto/incorreto/precisa ajustar)",
+        "Deixa claro que é um balcão de referência frio, sem acesso nem contexto do codebase do projeto",
+        "Opcionalmente aponta páginas da doc relevantes (ex.: caddyfile/patterns.md, directives/reverse_proxy.md) como material de consulta, sem opinar sobre o caso concreto",
+        "Não inventa configuração para os 4 serviços nem simula leitura de arquivo que não existe no espelho"
+      ]
+    }
+  ]
+}

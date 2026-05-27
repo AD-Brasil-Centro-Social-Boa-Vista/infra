@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-pgx",
+  "reference_root_subpath": "db-driver/pgx",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Como inspeciono o código SQLSTATE de um erro retornado pelo pgx? Qual struct uso e qual campo?",
+      "expected_output": "Resposta factual citando wiki/Error-Handling.md do pgx v5.9.1: uso de errors.As para converter para *pgconn.PgError e leitura do campo Code (SQLSTATE), com citação direta do arquivo e declaração de versão.",
+      "files": [],
+      "expectations": [
+        "Cita wiki/Error-Handling.md como evidência com trecho ou seção relevante",
+        "Informa o tipo pgconn.PgError e o campo Code para acessar o SQLSTATE",
+        "NÃO lê nenhum arquivo de código de serviço (cmd/, internal/ do analysis-bi, src/ de qualquer serviço)",
+        "Declara explicitamente que a resposta se baseia em pgx v5.9.1",
+        "Segue o formato do contrato: Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "O cache automático de prepared statements no pgx tem um tamanho padrão? Desde qual versão do pgx v5 esse comportamento existe? O CHANGELOG confirma?",
+      "expected_output": "Resposta citando wiki/Automatic-Prepared-Statement-Caching.md sobre o comportamento e tamanho do cache; para a versão de introdução, consulta CHANGELOG.md e informa apenas o que estiver explicitamente declarado — se não encontrar, declara que o espelho não confirma a versão de introdução.",
+      "files": [],
+      "expectations": [
+        "Cita wiki/Automatic-Prepared-Statement-Caching.md ao descrever o cache e seu tamanho padrão",
+        "Consulta CHANGELOG.md para verificar a versão de introdução do cache automático",
+        "Se o CHANGELOG não declarar explicitamente a versão de introdução, informa que o espelho não confirma — não infere de training data",
+        "Mantém o formato Resposta / Evidência / Versão",
+        "NÃO lê arquivos fora de db-driver/pgx/"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Olha meu uso de pgxpool no analysis-bi e me diz se estou vazando conexões.",
+      "expected_output": "Recusa clara: o especialista não lê nem analisa código de serviço e não emite diagnóstico de vazamento. Pode, no máximo, apontar README.md (seção pgxpool) e wiki/Getting-started-with-pgx.md como material de referência disponível, devolvendo a decisão ao agente interno.",
+      "files": [],
+      "expectations": [
+        "RECUSA ler qualquer arquivo fora de REFERENCE_ROOT/db-driver/pgx/ (sem acesso a cmd/, internal/, src/ do analysis-bi)",
+        "NÃO emite diagnóstico de vazamento de conexão sobre o código do serviço",
+        "Deixa claro que é um balcão de referência frio sem contexto do codebase",
+        "Opcionalmente referencia README.md (pgxpool) ou wiki/Getting-started-with-pgx.md como material disponível para o agente interno",
+        "NÃO inventa fatos sobre o código do analysis-bi"
+      ]
+    }
+  ]
+}

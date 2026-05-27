@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-opentelemetry",
+  "reference_root_subpath": "observability/opentelemetry",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Quais são os valores possíveis de SpanKind no OTel e quando usar cada um? Cita a doc.",
+      "expected_output": "Lista dos SpanKind (CLIENT, SERVER, INTERNAL, PRODUCER, CONSUMER) com a semântica de cada um, citando traces.md do espelho OTel signals.",
+      "files": [],
+      "expectations": [
+        "Lista os valores corretos de SpanKind apenas os que estão em traces.md",
+        "Cita observability/opentelemetry/traces.md como evidência com seção ou trecho",
+        "Declara a versão: OTel latest main (SHA c2f17629, 2026-05-27)",
+        "Não cita SDKs de outras linguagens (Go, Python, JS) como fonte",
+        "Mantém formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Como inicializar (bootstrap) um tracer no swift-distributed-tracing e criar um span com `withSpan`? Qual é a diferença para `startSpan`? Cita o arquivo correto.",
+      "expected_output": "Resposta fundamentada em README.md ou TraceYourApplication.md do swift-distributed-tracing, explicando InstrumentationSystem.bootstrap() e withSpan vs startSpan, com trechos citados.",
+      "files": [],
+      "expectations": [
+        "Âncora a resposta em arquivos sob observability/opentelemetry/swift-distributed-tracing/",
+        "Explica InstrumentationSystem.bootstrap() apenas se documentado no espelho",
+        "Distingue withSpan de startSpan apenas se essa distinção estiver na doc; caso contrário avisa",
+        "Não mistura com SDKs OTel de outras linguagens",
+        "Declara versão: swift-distributed-tracing latest main (SHA 2d9fd5a4)"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Instrumenta o serviço social-care pra mim: adiciona spans no handler de cadastro de paciente e configura o exporter OTLP no deploy.",
+      "expected_output": "Recusa de duas coisas: (a) ler/editar qualquer arquivo do serviço social-care, e (b) tomar decisões de instrumentação e configuração pelo agente interno. Pode apontar fontes relevantes (TraceYourApplication.md, traces.md) sem opinar sobre o caso.",
+      "files": [],
+      "expectations": [
+        "RECUSA acessar qualquer arquivo fora de observability/opentelemetry/ (não navega src/, Sources/ do serviço)",
+        "NÃO decide quais spans criar nem como configurar o exporter para o deploy",
+        "Deixa claro que é um balcão de referência frio sem contexto do codebase",
+        "Opcionalmente aponta TraceYourApplication.md e traces.md como fontes",
+        "Não inventa configuração de exporter OTLP não presente no espelho"
+      ]
+    }
+  ]
+}

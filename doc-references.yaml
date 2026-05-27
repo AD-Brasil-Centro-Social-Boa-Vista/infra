@@ -1,0 +1,691 @@
+# =============================================================================
+# doc-references.yaml
+# -----------------------------------------------------------------------------
+# Catálogo MESTRE de todas as referências de documentação técnica usadas pelos
+# 4 serviços do deploy ACDG-BV (Roraima). Serviu de plano de download para o
+# espelho OFFLINE em infra/reference/ (dump fiel, não resumo) — no mesmo modelo
+# dos dumps já existentes em web/handbook/reference/.
+#
+# Gerado em: 2026-05-27  (varredura dos 4 repos: social-care, people-context,
+#                         analysis-bi, web). Download executado em 2026-05-27.
+#
+# ESTADO ATUAL: a maioria dos targets já foi baixada (ver infra/reference/README.md,
+# que é o MANIFESTO autoritativo do espelho, com SHAs e contagens). O campo
+# `offline_status` abaixo reflete o estado pós-download.
+#
+# LEGENDA offline_status:
+#   downloaded  -> espelhado localmente (ver `local_path`)
+#   partial     -> espelho incompleto / fonte sem markdown público
+#   pending     -> ainda não baixado (sem fonte estável ou despriorizado)
+# =============================================================================
+
+meta:
+  deploy: "ACDG-BV / Roraima (VPS única, single-tenant)"
+  source_of_truth_adr: "web/handbook/architecture/adr/009-deployment-architecture-acdg-bv.md"
+  scanned_repos: [social-care, people-context, analysis-bi, web]
+  generated: "2026-05-27"
+  mirror_manifest: "infra/reference/README.md"
+  download_root: "infra/reference/<category>/<id>/   (dumps novos; os já espelhados ficam em web/handbook/reference/)"
+  mirror_summary: "~324 MB · 6836 .md/.mdx · 94 .html · 6 RFC .txt · 2 PDF (PostgreSQL 15/16) · 1 ZIP (FHIR R4 201MB)"
+  removed_legacy:
+    - "zitadel — IdP descartado em favor do Authentik (decisão do deploy BV). Não baixar docs."
+  still_pending:
+    - "datasus-dbf-dbc — sem doc oficial online estável"
+    - "apns — despriorizado (avaliar se é dependência ativa)"
+
+# -----------------------------------------------------------------------------
+# Visão por serviço — stack resumida (detalhe completo em `targets`)
+# -----------------------------------------------------------------------------
+services:
+  social-care:
+    repo: "github.com/acdgbrasil/svc-social-care"
+    language: "Swift 6.3.2 (local) / 6.3 (Docker) / 6.2 (CI)"
+    framework: "Vapor 4.121.3"
+    db: "PostgreSQL 15"
+    messaging: "NATS/JetStream (cliente NIO custom, ADR-016)"
+    auth: "OIDC via Authentik (self-hosted, IdP único), vapor/jwt 5.1.2"
+    patterns: [CQRS, DDD, Clean Architecture, Transactional Outbox, PoP, CRU]
+    container: "swift:6.3-jammy -> swift:6.3-jammy-slim (Ubuntu 22.04)"
+
+  people-context:
+    repo: "github.com/acdgbrasil/svc-people-context"
+    language: "TypeScript 5.9.3 (funcional, no-class)"
+    runtime: "Bun 1.3.11"
+    framework: "Elysia 1.4.28"
+    db: "PostgreSQL 15 (driver postgres.js 3.4.9)"
+    messaging: "NATS/JetStream 2.10 (nats.js 2.29.3)"
+    auth: "jose 6.2.2 (JWT RS256/JWKS), Authentik (Management API, IdP único)"
+    patterns: [Transactional Outbox, Branded Types, Discriminated Unions, RBAC]
+    container: "oven/bun:1.3-slim -> gcr.io/distroless/cc-debian12"
+
+  analysis-bi:
+    repo: "github.com/acdgbrasil/svc-analysis-bi"
+    language: "Go 1.25.0"
+    router: "go-chi/chi v5.2.5"
+    db: "PostgreSQL 15 (driver jackc/pgx v5.9.1) — star schema"
+    messaging: "NATS/JetStream 2 (nats-io/nats.go v1.50.0) — durable consumer"
+    privacy: [K-anonymity K=5, HMAC-SHA256, LGPD, never-persist-PII]
+    exports: [CSV, JSON, XML, Parquet, DBF, DBC, ODS, "FHIR R4 BR Core"]
+    container: "golang:1.25-alpine -> scratch (~10MB)"
+
+  web:
+    repo: "github.com/acdgbrasil/web"
+    status: "pre-Sprint 0 (sem src/ — stack decidida em 16 ADRs)"
+    language: "TypeScript 6.0.3 (strict)"
+    runtime: "Node 24 LTS + pnpm 10"
+    framework: "TanStack Start (Vite + Nitro) + React 19"
+    ui: "React Aria Components 1.17+ / Tailwind v4 / shadcn CLI v4 / Material 3"
+    role: "front + BFF (único serviço público; injeta Bearer OIDC)"
+    patterns: [BFF orchestration, "vertical slices + DDD", Zod schemas, ViewModels]
+
+# -----------------------------------------------------------------------------
+# Dumps já espelhados no handbook do web (anteriores a esta tarefa)
+# -----------------------------------------------------------------------------
+already_offline_web_handbook:
+  base_path: "web/handbook/reference/"
+  inventory:
+    - { id: docker,          path: "infrastructure/docker",       files: 8 }
+    - { id: magalu-cloud,    path: "infrastructure/magalu-cloud", files: 150, note: "docs da cloud (o provider Terraform foi baixado agora em infra/reference)" }
+    - { id: tanstack-start,  path: "framework/tanstack-start",    files: 83 }
+    - { id: tanstack-router, path: "framework/tanstack-router",   files: 169 }
+    - { id: tanstack-query,  path: "framework/tanstack-query",    files: 495 }
+    - { id: tanstack-form,   path: "framework/tanstack-form",     files: 256 }
+    - { id: tanstack-table,  path: "framework/tanstack-table",    files: 942 }
+    - { id: eslint,          path: "quality/eslint",              files: 667 }
+    - { id: node,            path: "runtime/node",                files: 66 }
+    - { id: pnpm,            path: "runtime/pnpm",                files: 122 }
+    - { id: tailwind,        path: "ui/tailwind",                 files: 221 }
+    - { id: zod,             path: "validation/zod",              files: 19,  status: partial }
+
+# =============================================================================
+# TARGETS — lista deduplicada (status pós-download em 2026-05-27)
+# =============================================================================
+targets:
+
+  # ----- Linguagens & Runtimes ----------------------------------------------
+  - id: swift
+    category: language
+    used_by: [social-care]
+    versions: { social-care: "6.3.2 / 6.3 / 6.2" }
+    docs:
+      primary: "https://docs.swift.org/swift-book/"
+      api_design_guidelines: "https://swift.org/documentation/api-design-guidelines/"
+      release_notes: "https://forums.swift.org/t/announcing-swift-6-3-1/86080"
+    offline_status: downloaded
+    local_path: "infra/reference/language/swift/"
+
+  - id: go
+    category: language
+    used_by: [analysis-bi]
+    versions: { analysis-bi: "1.25.0" }
+    docs:
+      primary: "https://go.dev/doc/"
+      effective_go: "https://go.dev/doc/effective_go"
+      code_review: "https://go.dev/wiki/CodeReviewComments"
+      spec: "https://go.dev/ref/spec"
+    offline_status: downloaded
+    local_path: "infra/reference/language/go/"
+
+  - id: bun
+    category: runtime
+    used_by: [people-context]
+    versions: { people-context: "1.3.11" }
+    docs:
+      primary: "https://bun.sh/docs"
+      repo: "https://github.com/oven-sh/bun"
+    offline_status: downloaded
+    local_path: "infra/reference/runtime/bun/"
+
+  - id: node
+    category: runtime
+    used_by: [web]
+    versions: { web: "24 LTS", forward_looking: "26 (GA, p/ planejamento)" }
+    docs:
+      api_v24: "https://nodejs.org/docs/latest-v24.x/api/"
+      api_v26: "https://nodejs.org/docs/latest-v26.x/api/"
+    offline_status: downloaded
+    local_path: "infra/reference/runtime/node/{v24,v26}/"
+    note: "HTML completo da API (browsable, convert-links) p/ v24.16.0 E v26.2.0. Markdown legado segue em web/handbook/reference/runtime/node."
+
+  - id: pnpm
+    category: runtime
+    used_by: [web]
+    versions: { web: "10" }
+    docs:
+      primary: "https://pnpm.io/motivation"
+    offline_status: downloaded
+    local_path: "web/handbook/reference/runtime/pnpm"
+
+  - id: typescript
+    category: language
+    used_by: [web, people-context]
+    versions: { web: "6.0.3", people-context: "5.9.3" }
+    docs:
+      primary: "https://www.typescriptlang.org/docs/"
+      release_notes: "https://www.typescriptlang.org/docs/handbook/release-notes/"
+    offline_status: downloaded
+    local_path: "infra/reference/language/typescript/"
+    note: "handbook EN completo do TypeScript-Website (supera o espelho parcial em web/handbook)"
+
+  # ----- Frameworks web ------------------------------------------------------
+  - id: vapor
+    category: web-framework
+    used_by: [social-care]
+    versions: { social-care: "4.121.3" }
+    docs:
+      primary: "https://docs.vapor.codes/"
+      api: "https://api.vapor.codes/vapor/documentation/vapor/"
+      repo: "https://github.com/vapor/vapor"
+    offline_status: downloaded
+    local_path: "infra/reference/web-framework/vapor/"
+
+  - id: elysia
+    category: web-framework
+    used_by: [people-context]
+    versions: { people-context: "1.4.28" }
+    docs:
+      primary: "https://elysiajs.com/"
+      repo: "https://github.com/elysiajs/documentation"
+    offline_status: downloaded
+    local_path: "infra/reference/web-framework/elysia/"
+
+  - id: chi
+    category: web-framework
+    used_by: [analysis-bi]
+    versions: { analysis-bi: "v5.2.5" }
+    docs:
+      primary: "https://pkg.go.dev/github.com/go-chi/chi/v5"
+      repo: "https://github.com/go-chi/chi"
+    offline_status: downloaded
+    local_path: "infra/reference/web-framework/chi/"
+
+  - id: tanstack-start
+    category: web-framework
+    used_by: [web]
+    docs: { primary: "https://tanstack.com/start/latest" }
+    offline_status: downloaded
+    local_path: "web/handbook/reference/framework/tanstack-start"
+
+  - id: tanstack-router
+    category: web-framework
+    used_by: [web]
+    docs: { primary: "https://tanstack.com/router/latest" }
+    offline_status: downloaded
+    local_path: "web/handbook/reference/framework/tanstack-router"
+
+  - id: tanstack-query
+    category: data-fetching
+    used_by: [web]
+    docs: { primary: "https://tanstack.com/query/latest" }
+    offline_status: downloaded
+    local_path: "web/handbook/reference/framework/tanstack-query"
+
+  - id: tanstack-form
+    category: forms
+    used_by: [web]
+    docs: { primary: "https://tanstack.com/form/latest" }
+    offline_status: downloaded
+    local_path: "web/handbook/reference/framework/tanstack-form"
+
+  - id: tanstack-table
+    category: tables
+    used_by: [web]
+    docs: { primary: "https://tanstack.com/table/latest" }
+    offline_status: downloaded
+    local_path: "web/handbook/reference/framework/tanstack-table"
+
+  # ----- UI / Styling --------------------------------------------------------
+  - id: react
+    category: ui
+    used_by: [web]
+    versions: { web: "19" }
+    docs:
+      primary: "https://react.dev/reference/react"
+      repo: "https://github.com/reactjs/react.dev"
+    offline_status: downloaded
+    local_path: "infra/reference/ui/react/"
+
+  - id: react-aria-components
+    category: ui
+    used_by: [web]
+    versions: { web: "1.17+" }
+    docs:
+      primary: "https://react-spectrum.adobe.com/react-aria/"
+      llms: "https://react-spectrum.adobe.com/llms.txt"
+    offline_status: downloaded
+    local_path: "infra/reference/ui/react-aria-components/"
+    note: "ADR-003 — primitives de acessibilidade (autoritativa)"
+
+  - id: tailwindcss
+    category: ui
+    used_by: [web]
+    versions: { web: "4" }
+    docs: { primary: "https://tailwindcss.com/docs" }
+    offline_status: downloaded
+    local_path: "web/handbook/reference/ui/tailwind"
+
+  - id: shadcn-ui
+    category: ui
+    used_by: [web]
+    versions: { web: "CLI v4 (mar/2026)" }
+    docs: { primary: "https://ui.shadcn.com/docs" }
+    offline_status: downloaded
+    local_path: "infra/reference/ui/shadcn-ui/"
+
+  - id: material-3
+    category: ui
+    used_by: [web]
+    docs: { primary: "https://m3.material.io/" }
+    offline_status: partial
+    local_path: "infra/reference/ui/material-3/"
+    note: "m3.material.io é SPA sem markdown público; baixado material-web (componentes) como alternativa"
+
+  # ----- Banco de dados ------------------------------------------------------
+  - id: postgresql
+    category: database
+    used_by: [social-care, people-context, analysis-bi, web]
+    versions:
+      backends: "15"        # social-care, people-context, analysis-bi (dev)
+      deploy_target: "16"   # ADR-009 — Postgres único compartilhado na VPS
+      latest: "18"          # doc HTML completa baixada a pedido (referência mais nova)
+    docs:
+      v15: "https://www.postgresql.org/docs/15/"
+      v16: "https://www.postgresql.org/docs/16/"
+      v18_html: "https://www.postgresql.org/docs/18/index.html"
+    offline_status: downloaded
+    local_path: "infra/reference/database/postgresql/"
+    note: "v18: HTML completo navegável em html-18/ (1147 páginas, mirror). v15 e v16: manuais A4 PDF oficiais (HTML tarball indisponível: 404)."
+
+  - id: pgx
+    category: db-driver
+    used_by: [analysis-bi]
+    versions: { analysis-bi: "v5.9.1" }
+    docs:
+      primary: "https://pkg.go.dev/github.com/jackc/pgx/v5"
+      repo: "https://github.com/jackc/pgx"
+    offline_status: downloaded
+    local_path: "infra/reference/db-driver/pgx/"
+    note: "inclui a wiki em wiki/"
+
+  - id: postgres-js
+    category: db-driver
+    used_by: [people-context]
+    versions: { people-context: "3.4.9" }
+    docs:
+      repo: "https://github.com/porsager/postgres"
+    offline_status: downloaded
+    local_path: "infra/reference/db-driver/postgres-js/"
+    note: "doc principal é o README (não há pasta docs/)"
+
+  - id: vapor-postgres-kit
+    category: db-driver
+    used_by: [social-care]
+    versions: { postgres-kit: "2.15.1", postgres-nio: "1.31.0", sql-kit: "3.35.0" }
+    docs:
+      repo: "https://github.com/vapor/postgres-kit"
+      postgres_nio: "https://github.com/vapor/postgres-nio"
+      sql_kit: "https://github.com/vapor/sql-kit"
+    offline_status: downloaded
+    local_path: "infra/reference/db-driver/vapor-postgres-kit/"
+
+  # ----- Mensageria ----------------------------------------------------------
+  - id: nats-jetstream
+    category: messaging
+    used_by: [social-care, people-context, analysis-bi]
+    versions:
+      server: "2.10 (people-context) / 2 (analysis-bi)"
+    docs:
+      primary: "https://docs.nats.io/"
+      jetstream: "https://docs.nats.io/nats-concepts/jetstream"
+      protocol: "https://docs.nats.io/reference/reference-protocols/nats-protocol"
+    offline_status: downloaded
+    local_path: "infra/reference/messaging/nats-jetstream/"
+    note: "fonte do docs.nats.io (nats-io/nats.docs)"
+
+  - id: nats-go
+    category: messaging-client
+    used_by: [analysis-bi]
+    versions: { analysis-bi: "v1.50.0" }
+    docs:
+      primary: "https://pkg.go.dev/github.com/nats-io/nats.go"
+      repo: "https://github.com/nats-io/nats.go"
+    offline_status: downloaded
+    local_path: "infra/reference/messaging-client/nats-go/"
+
+  - id: nats-js
+    category: messaging-client
+    used_by: [people-context]
+    versions: { people-context: "2.29.3" }
+    docs:
+      repo: "https://github.com/nats-io/nats.js"
+    offline_status: downloaded
+    local_path: "infra/reference/messaging-client/nats-js/"
+    note: "DESVIO: tag 2.29.3 inexistente upstream; repo migrou p/ monorepo v3 — baixado v3.4.0"
+
+  # ----- Auth / Identidade / Cripto -----------------------------------------
+  - id: authentik
+    category: auth-idp
+    used_by: [social-care, people-context, analysis-bi, web]
+    docs:
+      primary: "https://docs.goauthentik.io/"
+      repo: "https://github.com/goauthentik/authentik"
+    offline_status: downloaded
+    local_path: "infra/reference/auth-idp/authentik/"
+    note: "IdP ÚNICO do deploy BV (self-hosted, auth.acdg-bv.org.br). ADR-027/ADR-009. Zitadel descartado (legado)."
+
+  - id: jose
+    category: auth-lib
+    used_by: [people-context]
+    versions: { people-context: "6.2.2" }
+    docs:
+      repo: "https://github.com/panva/jose"
+    offline_status: downloaded
+    local_path: "infra/reference/auth-lib/jose/"
+
+  - id: vapor-jwt
+    category: auth-lib
+    used_by: [social-care]
+    versions: { jwt: "5.1.2", jwt-kit: "5.3.0" }
+    docs:
+      repo: "https://github.com/vapor/jwt"
+      guide: "https://docs.vapor.codes/security/jwt/"
+    offline_status: downloaded
+    local_path: "infra/reference/auth-lib/vapor-jwt/"
+
+  - id: swift-crypto
+    category: crypto-lib
+    used_by: [social-care]
+    versions: { swift-crypto: "4.2.0" }
+    docs:
+      repo: "https://github.com/apple/swift-crypto"
+      cryptokit: "https://developer.apple.com/documentation/cryptokit"
+    offline_status: downloaded
+    local_path: "infra/reference/crypto-lib/swift-crypto/"
+
+  # ----- Infra / Deploy (ADR-009) -------------------------------------------
+  - id: docker
+    category: infra
+    used_by: [social-care, people-context, analysis-bi, web]
+    docs: { primary: "https://docs.docker.com/" }
+    offline_status: downloaded
+    local_path: "web/handbook/reference/infrastructure/docker"
+
+  - id: docker-compose
+    category: infra
+    used_by: [web]
+    versions: { web: "v5 (Mont Blanc, dez/2025)" }
+    docs:
+      compose_file: "https://docs.docker.com/reference/compose-file/"
+      deploy_resources: "https://docs.docker.com/reference/compose-file/deploy/#resources"
+      userns_remap: "https://docs.docker.com/engine/security/userns-remap/"
+      journald: "https://docs.docker.com/config/containers/logging/journald/"
+    offline_status: downloaded
+    local_path: "infra/reference/infra/docker-compose/"
+
+  - id: caddy
+    category: infra
+    used_by: [web]
+    versions: { web: "v2.x" }
+    docs:
+      primary: "https://caddyserver.com/docs/"
+      caddyfile: "https://caddyserver.com/docs/caddyfile/concepts"
+    offline_status: downloaded
+    local_path: "infra/reference/infra/caddy/"
+    note: "reverse proxy, TLS Let's Encrypt automático, HTTP/3"
+
+  - id: opentofu-terraform
+    category: iac
+    used_by: [web]
+    docs:
+      opentofu: "https://opentofu.org/docs/"
+      terraform: "https://developer.hashicorp.com/terraform/docs"
+    offline_status: downloaded
+    local_path: "infra/reference/iac/opentofu-terraform/"
+    note: "terraform docs via hashicorp/web-unified-docs (v1.12.x)"
+
+  - id: magalu-cloud-provider
+    category: iac
+    used_by: [web]
+    versions: { provider_mgc: "v0.50.x (pin estrito)" }
+    docs:
+      provider: "https://registry.terraform.io/providers/MagaluCloud/mgc/latest/docs"
+      cloud_docs: "https://docs.magalu.cloud/"
+    offline_status: downloaded
+    local_path: "infra/reference/iac/magalu-cloud-provider/"
+    note: "provider Terraform mgc (tfplugindocs); a cloud docs já estava em web/handbook/reference/infrastructure/magalu-cloud"
+
+  - id: cloudflare
+    category: infra
+    used_by: [web]
+    docs:
+      health_checks: "https://developers.cloudflare.com/health-checks/"
+      workers_kv: "https://developers.cloudflare.com/kv/"
+      web_analytics: "https://developers.cloudflare.com/web-analytics/"
+      pages: "https://developers.cloudflare.com/pages/"
+    offline_status: downloaded
+    local_path: "infra/reference/infra/cloudflare/"
+    note: "seções dns/health-checks/kv/pages/web-analytics"
+
+  - id: infisical
+    category: secrets
+    used_by: [web]
+    versions: { web: "Community Edition (MIT)" }
+    docs:
+      self_host: "https://infisical.com/docs/self-hosting/overview"
+      docker_compose: "https://infisical.com/docs/integrations/platforms/docker-compose"
+    offline_status: downloaded
+    local_path: "infra/reference/secrets/infisical/"
+
+  - id: vaultwarden
+    category: secrets
+    used_by: [web]
+    docs:
+      wiki: "https://github.com/dani-garcia/vaultwarden/wiki"
+    offline_status: downloaded
+    local_path: "infra/reference/secrets/vaultwarden/"
+
+  - id: glitchtip
+    category: observability
+    used_by: [web]
+    docs:
+      primary: "https://glitchtip.com/documentation"
+      install: "https://glitchtip.com/documentation/install#docker-compose"
+    offline_status: partial
+    local_path: "infra/reference/observability/glitchtip/"
+    note: "snapshot HTML (fallback); repo de docs no GitLab exige autenticação"
+
+  # ----- Observabilidade / Logging ------------------------------------------
+  - id: pino
+    category: logging
+    used_by: [web]
+    versions: { web: "v18+" }
+    docs:
+      repo: "https://github.com/pinojs/pino"
+      redaction: "https://github.com/pinojs/pino/blob/main/docs/redaction.md"
+    offline_status: downloaded
+    local_path: "infra/reference/logging/pino/"
+
+  - id: opentelemetry
+    category: observability
+    used_by: [social-care, web]
+    docs:
+      traces: "https://opentelemetry.io/docs/concepts/signals/traces/"
+      swift_tracing: "https://github.com/apple/swift-distributed-tracing"
+    offline_status: downloaded
+    local_path: "infra/reference/observability/opentelemetry/"
+    note: "signals (traces/metrics/logs) + swift-distributed-tracing"
+
+  - id: sentry-sdk
+    category: observability
+    used_by: [web]
+    docs:
+      filtering: "https://docs.sentry.io/platforms/javascript/configuration/filtering/"
+    offline_status: downloaded
+    local_path: "infra/reference/observability/sentry-sdk/"
+    note: "@sentry/node — SDK do GlitchTip; baixado o markdown-fonte (filtering.mdx)"
+
+  - id: web-vitals
+    category: performance
+    used_by: [web]
+    docs:
+      repo: "https://github.com/GoogleChrome/web-vitals"
+      vitals: "https://web.dev/articles/vitals"
+      inp: "https://web.dev/articles/inp"
+      lighthouse_ci: "https://github.com/GoogleChrome/lighthouse-ci"
+    offline_status: downloaded
+    local_path: "infra/reference/performance/web-vitals/"
+
+  # ----- Testing / Quality ---------------------------------------------------
+  - id: vitest
+    category: testing
+    used_by: [web]
+    versions: { web: "3.x" }
+    docs: { primary: "https://vitest.dev/guide/" }
+    offline_status: downloaded
+    local_path: "infra/reference/testing/vitest/"
+
+  - id: playwright
+    category: testing
+    used_by: [web]
+    docs: { primary: "https://playwright.dev/docs/intro" }
+    offline_status: downloaded
+    local_path: "infra/reference/testing/playwright/"
+
+  - id: msw
+    category: testing
+    used_by: [web]
+    docs: { primary: "https://mswjs.io/docs/" }
+    offline_status: downloaded
+    local_path: "infra/reference/testing/msw/"
+
+  - id: axe-a11y
+    category: testing
+    used_by: [web]
+    docs:
+      jest_axe: "https://github.com/nickcolley/jest-axe"
+      axe_playwright: "https://github.com/dequelabs/axe-core-npm/tree/develop/packages/playwright"
+    offline_status: downloaded
+    local_path: "infra/reference/testing/axe-a11y/"
+
+  - id: eslint
+    category: quality
+    used_by: [web]
+    versions: { web: "9 (flat config)" }
+    docs:
+      primary: "https://eslint.org/docs/latest/"
+      typescript_eslint: "https://typescript-eslint.io/"
+    offline_status: downloaded
+    local_path: "web/handbook/reference/quality/eslint"
+
+  - id: prettier
+    category: quality
+    used_by: [web]
+    versions: { web: "3.x" }
+    docs: { primary: "https://prettier.io/docs/en/" }
+    offline_status: downloaded
+    local_path: "infra/reference/quality/prettier/"
+
+  - id: typedoc-tsdoc
+    category: docs-tooling
+    used_by: [web]
+    docs:
+      typedoc: "https://typedoc.org/"
+      tsdoc: "https://tsdoc.org/"
+      repo: "https://github.com/microsoft/tsdoc"
+    offline_status: downloaded
+    local_path: "infra/reference/docs-tooling/typedoc-tsdoc/"
+
+  - id: zod
+    category: validation
+    used_by: [web]
+    versions: { web: "~3.x" }
+    docs: { primary: "https://zod.dev/" }
+    offline_status: partial
+    local_path: "web/handbook/reference/validation/zod"
+    note: "permanece parcial no handbook do web; não re-baixado"
+
+  # ----- Formatos de dados / Interoperabilidade (analysis-bi) ---------------
+  - id: apache-parquet
+    category: data-format
+    used_by: [analysis-bi]
+    docs:
+      primary: "https://parquet.apache.org/docs/"
+      go_lib: "https://github.com/parquet-go/parquet-go"
+    offline_status: downloaded
+    local_path: "infra/reference/data-format/apache-parquet/"
+    note: "parquet-format (spec) + parquet-go (README)"
+
+  - id: fhir-br-core
+    category: interop-health
+    used_by: [analysis-bi]
+    versions: { fhir: "R4" }
+    docs:
+      fhir_r4: "https://hl7.org/fhir/R4/"
+      br_core_rnds: "https://simplifier.net/redenacionaldedadosemsaude"
+    offline_status: downloaded
+    local_path: "infra/reference/interop-health/fhir-br-core/"
+    note: "fhir-r4-spec.zip oficial (201MB, não descompactado). BR Core RNDS só no Simplifier (online)."
+
+  - id: datasus-dbf-dbc
+    category: data-format
+    used_by: [analysis-bi]
+    docs:
+      note: "dBASE III (DBF) + LZ77 (DBC nativo DataSUS/TABWIN) — sem doc oficial online estável"
+    offline_status: pending
+
+  # ----- Swift NIO / ecossistema Apple (transitivas relevantes) -------------
+  - id: swift-nio
+    category: networking
+    used_by: [social-care]
+    versions: { swift-nio: "2.95.0", nio-http2: "1.40.0", nio-ssl: "2.36.0" }
+    docs:
+      repo: "https://github.com/apple/swift-nio"
+      docc: "https://swiftpackageindex.com/apple/swift-nio/documentation"
+    offline_status: downloaded
+    local_path: "infra/reference/networking/swift-nio/"
+
+  - id: apns
+    category: push-notifications
+    used_by: [social-care]
+    docs:
+      setup: "https://developer.apple.com/documentation/usernotifications/"
+      apnswift: "https://github.com/swift-server-community/APNSwift"
+    offline_status: pending
+    note: "despriorizado; avaliar se é dependência ativa do BV"
+
+# =============================================================================
+# Especificações e RFCs  →  infra/reference/specs/
+# =============================================================================
+specs_rfcs:
+  offline_status: downloaded
+  local_path_rfc: "infra/reference/specs/rfc/"
+  local_path_web: "infra/reference/specs/web/"
+  items:
+    - { id: rfc-4122, title: "UUID", url: "https://www.rfc-editor.org/rfc/rfc4122.txt", used_by: [social-care] }
+    - { id: rfc-9562, title: "UUID v6/v7 (atualiza 4122)", url: "https://www.rfc-editor.org/rfc/rfc9562.txt", used_by: [social-care, web] }
+    - { id: rfc-7517, title: "JWK (JSON Web Key)", url: "https://www.rfc-editor.org/rfc/rfc7517.txt", used_by: [social-care, people-context] }
+    - { id: rfc-7662, title: "OAuth2 Token Introspection", url: "https://www.rfc-editor.org/rfc/rfc7662.txt", used_by: [people-context] }
+    - { id: rfc-8941, title: "HTTP Structured Headers", url: "https://www.rfc-editor.org/rfc/rfc8941.txt", used_by: [social-care] }
+    - { id: rfc-6234, title: "SHA-256 / HMAC", url: "https://www.rfc-editor.org/rfc/rfc6234.txt", used_by: [analysis-bi] }
+    - { id: w3c-trace-context, title: "W3C Trace Context", url: "https://www.w3.org/TR/trace-context/", used_by: [web] }
+    - { id: api-health-check, title: "draft-inadarei-api-health-check", url: "https://datatracker.ietf.org/doc/html/draft-inadarei-api-health-check", used_by: [web] }
+    - { id: openapi-3.1, title: "OpenAPI 3.1", url: "https://spec.openapis.org/oas/v3.1.0", used_by: [people-context, web] }
+    - { id: asyncapi-3.x, title: "AsyncAPI 3.x", url: "https://www.asyncapi.com/docs/reference/specification/v3.0.0", used_by: [people-context] }
+    - { id: oidc-core, title: "OpenID Connect Core", url: "https://openid.net/specs/openid-connect-core-1_0.html", used_by: [social-care, people-context, web] }
+
+# =============================================================================
+# Compliance / legislação (PT-BR)  →  infra/reference/compliance/
+# =============================================================================
+compliance:
+  offline_status: downloaded
+  local_path: "infra/reference/compliance/"
+  items:
+    - id: lgpd
+      title: "LGPD — Lei 13.709/2018"
+      url: "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+      used_by: [social-care, analysis-bi, web]
+      arts_referenciados: [5, 12, 37, 46, 48, 50, 52]
+    - id: anpd-anonimizacao
+      title: "ANPD — Documentos e publicações (índice)"
+      url: "https://www.gov.br/anpd/pt-br/documentos-e-publicacoes"
+      used_by: [analysis-bi, web]

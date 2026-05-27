@@ -1,0 +1,61 @@
+# =============================================================================
+# compose.proxy.yml — Caddy v2 (TLS automático Let's Encrypt + HTTP/3)
+# Incluído por compose.yml via `include:`. Não subir isoladamente.
+# ADR-009 §3 — reverse proxy único, TLS Let's Encrypt, HTTP/3 (QUIC/UDP).
+# =============================================================================
+
+networks:
+  acdg-bv:
+    external: true
+
+volumes:
+  caddy_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR:-/data}/caddy
+  caddy_config:
+
+services:
+  caddy:
+    image: caddy:${CADDY_TAG:-2.10-alpine}
+    restart: unless-stopped
+    networks:
+      - acdg-bv
+    # 80/tcp — HTTP (redirect → HTTPS via Caddy automático)
+    # 443/tcp — HTTPS / TLS
+    # 443/udp — HTTP/3 (QUIC)
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    # NET_ADMIN: necessário no Linux para que Caddy consiga fazer SO_REUSEPORT
+    # e bind em portas privilegiadas (<1024) via UDP (QUIC/HTTP3) sem root.
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      DOMAIN: ${DOMAIN:-acdg-bv.org.br}
+      ACME_EMAIL: ${ACME_EMAIL:-ops@acdg-bv.org.br}
+    env_file:
+      - path: ../env/.env
+        required: false
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 64M
+    healthcheck:
+      # caddy:alpine inclui wget — admin API disponível em :2019
+      test: ["CMD-SHELL", "wget -qO- http://localhost:2019/config/ >/dev/null"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    # depends_on sem condition (web não tem healthcheck ainda e é apenas ordem de boot)
+    depends_on:
+      - web

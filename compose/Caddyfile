@@ -1,0 +1,43 @@
+# =============================================================================
+# Caddyfile — ACDG-BV (ADR-009 §3) · TLS automático Let's Encrypt + HTTP/3
+# ~3 linhas por serviço. Domínios via {$DOMAIN} (default acdg-bv.org.br).
+# people-context NÃO é exposto: é consumido internamente pelo BFF (web).
+# =============================================================================
+{
+	email {$ACME_EMAIL:ops@acdg-bv.org.br}
+	servers {
+		protocols h1 h2 h3
+	}
+}
+
+# Front + BFF (único entrypoint público de aplicação)
+{$DOMAIN:acdg-bv.org.br} {
+	encode zstd gzip
+	reverse_proxy web:3000
+}
+
+# social-care (Swift/Vapor) — API direta opcional; o BFF já agrega
+api.{$DOMAIN:acdg-bv.org.br} {
+	encode zstd gzip
+	reverse_proxy social-care:8080
+}
+
+# Authentik — IdP (OIDC)
+auth.{$DOMAIN:acdg-bv.org.br} {
+	reverse_proxy authentik-server:9000
+}
+
+# Infisical — secrets (admin)
+secrets.{$DOMAIN:acdg-bv.org.br} {
+	reverse_proxy infisical:8080
+}
+
+# Vaultwarden — cofre humano
+vault.{$DOMAIN:acdg-bv.org.br} {
+	reverse_proxy vaultwarden:80
+}
+
+# analysis-bi — indicadores (só sobe com profile `analytics`)
+bi.{$DOMAIN:acdg-bv.org.br} {
+	reverse_proxy analysis-bi:8080
+}

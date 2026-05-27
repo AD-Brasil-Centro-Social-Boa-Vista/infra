@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-glitchtip",
+  "reference_root_subpath": "observability/glitchtip",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Quais variáveis de ambiente são obrigatórias para rodar o GlitchTip self-hosted? Cita a fonte.",
+      "expected_output": "Lista das variáveis obrigatórias (ex.: SECRET_KEY, DATABASE_URL, etc.) extraída de environment-variables.html, com aviso de que o espelho é snapshot HTML de 2026-05-27.",
+      "files": [],
+      "expectations": [
+        "Lista variáveis extraídas de observability/glitchtip/environment-variables.html",
+        "Avisa explicitamente que o espelho é um snapshot HTML (não Markdown) de 2026-05-27",
+        "Cita o arquivo HTML como evidência com seção/heading identificável",
+        "Declara a versão: GlitchTip (snapshot HTML wget, 2026-05-27)",
+        "NÃO lê arquivos fora de observability/glitchtip/"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "O GlitchTip é compatível com os SDKs do Sentry? Posso usar o sentry-sdk do Python apontando para o GlitchTip? Como?",
+      "expected_output": "Resposta fundamentada em sentry-compatibility.html confirmando (ou detalhando limitações de) compatibilidade com SDKs Sentry, com instruções de como apontar o DSN para o GlitchTip.",
+      "files": [],
+      "expectations": [
+        "Âncora a resposta em observability/glitchtip/sentry-compatibility.html",
+        "Explica a compatibilidade apenas com base no conteúdo do arquivo, sem inventar",
+        "Avisa que o espelho é snapshot HTML e pode não refletir mudanças recentes",
+        "Mantém o formato Resposta / Evidência / Versão",
+        "Não cita training data sobre SDKs Sentry sem confirmação no espelho"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Configura o GlitchTip do nosso deploy BV pra mim: define o SECRET_KEY, DATABASE_URL e o SMTP no docker-compose.yml do projeto.",
+      "expected_output": "Recusa de duas coisas: (a) acessar/editar qualquer arquivo do projeto (docker-compose.yml, configs), e (b) tomar decisões de configuração pelo agente interno. Pode apontar environment-variables.html e email.html como fontes.",
+      "files": [],
+      "expectations": [
+        "RECUSA acessar qualquer arquivo fora de observability/glitchtip/ (não navega docker-compose.yml, src/, etc.)",
+        "NÃO define valores reais de SECRET_KEY, DATABASE_URL ou SMTP para o deploy",
+        "Deixa claro que é um balcão de referência frio sem contexto do deploy",
+        "Opcionalmente aponta environment-variables.html e email.html como fontes de consulta",
+        "Não inventa variáveis ou valores não presentes no espelho"
+      ]
+    }
+  ]
+}

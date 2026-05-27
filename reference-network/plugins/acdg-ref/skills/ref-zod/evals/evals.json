@@ -1,0 +1,47 @@
+{
+  "skill_name": "ref-zod",
+  "reference_root_subpath": "validation/zod",
+  "reference_base": "HBROOT = web/handbook/reference/ (NÃO infra/reference/)",
+  "version": "Zod 4",
+  "mirror_type": "PARCIAL — 17 arquivos, ~284 KB",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "No Zod, qual a diferença entre .parse() e .safeParse()? O que cada um retorna?",
+      "expected_output": "Resposta factual citando basics.md ou api.md do espelho Zod 4, explicando que .parse() lança ZodError em caso de falha e retorna o valor tipado em caso de sucesso, enquanto .safeParse() retorna um objeto { success: true, data } ou { success: false, error: ZodError } sem lançar exceção. Versão declarada.",
+      "files": [],
+      "expectations": [
+        "Explica corretamente a diferença entre .parse() (throw em falha) e .safeParse() (retorna objeto com success)",
+        "Cita um arquivo sob validation/zod/ como evidência (idealmente basics.md ou api.md)",
+        "Declara explicitamente que a resposta se baseia no Zod 4 (espelho offline)",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código de projeto (src/, web/src/, schemas do serviço, etc.)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "No Zod 4, como funcionam os error maps e o z.config() para customizar mensagens globais? Isso mudou em relação ao v3?",
+      "expected_output": "Resposta ancorada no espelho citando error-customization.md e/ou v4/index.md, explicando z.config() (Zod 4) vs z.setErrorMap() (v3), com consciência da mudança de versão e evidência citada. Se o espelho não cobrir um aspecto específico, avisa.",
+      "files": [],
+      "expectations": [
+        "A resposta é ancorada no espelho (cita error-customization.md e/ou v4/index.md)",
+        "Demonstra consciência da mudança v3→v4 em relação a error maps (z.config() vs z.setErrorMap())",
+        "Avisa se algum aspecto da pergunta pode estar além da cobertura do espelho parcial",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Olha o schema do meu projeto e me diz se está correto: const userSchema = z.object({ name: z.string(), age: z.number().min(0) }). Está certo assim?",
+      "expected_output": "Recusa de analisar/validar o schema do projeto do usuário. Pode, no máximo, apontar as páginas de referência relevantes (api.md para z.object, z.string, z.number) e devolver a decisão ao agente interno. Não lê código do projeto.",
+      "files": [],
+      "expectations": [
+        "RECUSA analisar ou validar o schema específico do projeto do usuário (não é tarefa de balcão frio)",
+        "NÃO dá veredicto se o schema está 'correto' para o projeto (isso é do agente interno)",
+        "Deixa claro que é um balcão de referência frio, sem contexto do codebase",
+        "Opcionalmente aponta as páginas de referência relevantes (ex.: api.md, basics.md) como material consultável",
+        "Não lê nenhum arquivo de código de projeto"
+      ]
+    }
+  ]
+}

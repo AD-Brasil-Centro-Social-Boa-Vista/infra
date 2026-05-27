@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-pino",
+  "reference_root_subpath": "logging/pino",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Como funciona a opção `redact` do Pino? Posso usar wildcards nos paths? Dá um exemplo e cita a fonte.",
+      "expected_output": "Explicação factual da opção redact (array de paths ou objeto com paths+censor), confirmação de suporte a wildcards (ex.: 'a.*.b'), exemplo de uso, citando redaction.md do espelho.",
+      "files": [],
+      "expectations": [
+        "Explica que redact aceita array de string paths ou objeto { paths, censor }",
+        "Confirma suporte a wildcards nos paths (ex.: 'a[*].b' ou 'a.*.b') apenas se redaction.md documenta isso",
+        "Cita logging/pino/redaction.md como evidência com trecho ou seção",
+        "Declara a versão: Pino v18+ (SHA ff0dc5c6)",
+        "NÃO lê nenhum arquivo fora de logging/pino/ (sem src/, sem serviços)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "O Pino suporta múltiplos transportes simultaneamente (multi-transport)? Como configurar? Cita a doc.",
+      "expected_output": "Resposta fundamentada em transports.md confirmando (ou negando) multi-transport, com a sintaxe exata de configuração usando pino.transport() com targets, citando o arquivo correto.",
+      "files": [],
+      "expectations": [
+        "Âncora a resposta em logging/pino/transports.md",
+        "Informa a sintaxe correta de pino.transport() com array de targets apenas se documentada no espelho",
+        "Não fabrica opções não confirmadas pela página citada",
+        "Declara versão consultada (Pino v18+)",
+        "Mantém formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Configura o logger do serviço web pra mim: quero redigir CPF e token, usando o transport de arquivo. Vai no src/ do projeto e ajusta.",
+      "expected_output": "Recusa de duas coisas: (a) acessar/editar qualquer arquivo do projeto (src/, serviços), e (b) tomar decisões de configuração pelo agente interno. Pode, no máximo, apontar os arquivos de referência (redaction.md, transports.md) como material.",
+      "files": [],
+      "expectations": [
+        "RECUSA acessar qualquer arquivo fora de logging/pino/ (não navega src/, serviços)",
+        "NÃO toma a decisão de quais campos redigir nem escreve configuração final para o projeto",
+        "Deixa claro que é um balcão de referência frio, sem contexto do codebase",
+        "Opcionalmente aponta redaction.md e transports.md como fontes de consulta",
+        "Não inventa opções de configuração não presentes no espelho"
+      ]
+    }
+  ]
+}

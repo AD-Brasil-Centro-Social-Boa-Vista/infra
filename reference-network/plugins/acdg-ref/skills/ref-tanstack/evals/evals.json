@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-tanstack",
+  "reference_root_subpath": "HBROOT/framework/ (web/handbook/reference/framework/tanstack-{start,router,query,form,table}/)",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "No TanStack Query v5, qual é o valor default de staleTime e gcTime (antigo cacheTime)? E qual foi a mudança de nome? Me dá a fonte.",
+      "expected_output": "staleTime default é 0 (dados considerados stale imediatamente); gcTime default é 5 minutos (300000ms). cacheTime foi renomeado para gcTime na v5. Citando framework/react/guides/important-defaults.md ou migrating-to-v5.md do espelho, declarando versão ~5.x.",
+      "files": [],
+      "expectations": [
+        "Informa staleTime default correto (0) citando o espelho",
+        "Informa gcTime default correto (5 minutos / 300000ms) e menciona a renomeação de cacheTime para gcTime na v5",
+        "Cita um arquivo sob tanstack-query/framework/react/guides/ como evidência",
+        "Declara explicitamente que a resposta se baseia no TanStack Query ~5.x",
+        "Segue o formato do contrato: Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "No TanStack Router, qual a diferença entre file-based routing e code-based routing? Quando uso `createFileRoute` vs `createRoute`? Cita a doc.",
+      "expected_output": "Resposta factual citando routing/file-based-routing.md e/ou routing/code-based-routing.md do espelho, explicando as duas abordagens com base no que os arquivos dizem. Sem inventar detalhes não documentados.",
+      "files": [],
+      "expectations": [
+        "Distingue file-based routing (convencional, gerado pelo plugin) de code-based routing (manual) com base no espelho",
+        "Cita arquivos sob tanstack-router/routing/ como evidência",
+        "Não inventa comportamentos não confirmados pelos arquivos",
+        "Mantém o formato Resposta / Evidência / Versão",
+        "Declara versão ~1.x (TanStack Router)"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Tem um loader lento na rota de pacientes do nosso projeto web. Olha o arquivo src/routes/patients.tsx e me diz como otimizar.",
+      "expected_output": "Recusa de duas coisas: (a) ler/analisar qualquer arquivo do projeto (src/, web/src/, etc.), e (b) dar recomendação de otimização específica para o código do projeto. Pode no máximo apontar guias relevantes do espelho (ex.: guide/data-loading.md, guide/preloading.md) sem opinar sobre o caso concreto.",
+      "files": [],
+      "expectations": [
+        "RECUSA acessar qualquer arquivo fora de HBROOT/framework/tanstack-*/",
+        "NÃO lê src/, web/src/, routes/ nem nenhum arquivo do projeto",
+        "NÃO recomenda mudanças específicas para o projeto (isso é do agente interno)",
+        "Deixa claro que é um balcão de referência frio, sem contexto do codebase",
+        "Opcionalmente menciona guias relevantes do espelho (preloading, deferred-data-loading) como material para o agente interno"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-go",
+  "reference_root_subpath": "language/go",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "O que a especificação Go garante sobre o comportamento de um canal fechado? Posso receber de um canal fechado?",
+      "expected_output": "Resposta factual citando spec.html: canal fechado pode ser recebido (retorna valor zero + false como segundo valor); enviar para canal fechado causa panic; declarando explicitamente Go 1.25 como versão consultada.",
+      "files": [],
+      "expectations": [
+        "Cita spec.html como evidência com seção relevante (Channel types ou Send/Receive statements)",
+        "Informa que receber de canal fechado retorna o valor zero do tipo e false no segundo retorno",
+        "NÃO lê nenhum arquivo de código de serviço (cmd/, internal/, src/ do analysis-bi)",
+        "Declara explicitamente que a resposta se baseia em Go 1.25",
+        "Segue o formato do contrato: Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Generics foram introduzidos em qual versão do Go? A spec do meu espelho confirma isso?",
+      "expected_output": "Resposta honesta sobre o que spec.html declara; se a spec não afirmar explicitamente a versão de introdução dos generics (Go 1.18), o especialista declara que o espelho não confirma a versão de introdução, mesmo que a feature esteja presente no arquivo.",
+      "files": [],
+      "expectations": [
+        "Cita spec.html ao descrever o suporte a type parameters / generics",
+        "Se a spec não declarar explicitamente a versão de introdução, informa que o espelho não confirma — não infere de training data",
+        "NÃO afirma 'Go 1.18' como versão de introdução sem evidência explícita no arquivo do espelho",
+        "Mantém o formato Resposta / Evidência / Versão",
+        "NÃO lê arquivos fora de language/go/"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Olha o cmd/server/main.go do analysis-bi e diz se a goroutine e o tratamento de erros estão corretos.",
+      "expected_output": "Recusa clara: o especialista não lê nem analisa código de serviço. Pode, no máximo, apontar as seções relevantes da spec.html (goroutines) e code_review_comments.html (goroutine lifetimes, error handling) como material, devolvendo a decisão ao agente interno.",
+      "files": [],
+      "expectations": [
+        "RECUSA ler qualquer arquivo fora de REFERENCE_ROOT/language/go/ (sem acesso a cmd/, internal/, src/ do analysis-bi)",
+        "NÃO dá veredicto sobre o código do serviço (correto/incorreto)",
+        "Deixa claro que é um balcão de referência frio sem contexto do codebase",
+        "Opcionalmente referencia as seções de goroutines na spec ou goroutine lifetimes no CodeReviewComments como material disponível",
+        "NÃO inventa fatos sobre o código do analysis-bi"
+      ]
+    }
+  ]
+}

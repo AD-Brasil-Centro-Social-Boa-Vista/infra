@@ -1,0 +1,59 @@
+# =============================================================================
+# compose.analysis-bi.yml — Go/chi · indicadores anonimizados (ADR-009)
+# -----------------------------------------------------------------------------
+# Ativado somente com profile `analytics`:
+#   docker compose --profile analytics up -d
+# Consome ~18 tipos de evento de social-care.events.<EventType> via NATS.
+# Anonimiza PII na ingestão (SHA-256 salgado, K-anonymity K=5). NUNCA armazena PII.
+# Porta interna 8080; exposta via Caddy em bi.<DOMAIN> (profile analytics).
+# Limits: cpus 0.5 / mem 512M.
+# Healthcheck: GET /healthz (padrão Go chi conforme ADR-014).
+# =============================================================================
+
+networks:
+  acdg-bv:
+    external: true
+
+secrets:
+  analysis_db_password:
+    file: ${SECRETS_DIR:-/etc/acdg-secrets}/analysis_db_password
+
+services:
+  analysis-bi:
+    image: ${REGISTRY:-ghcr.io/acdgbrasil}/svc-analysis-bi:${BI_TAG:-latest}
+    restart: unless-stopped
+    profiles:
+      - analytics
+    env_file:
+      - path: ../env/.env
+        required: false
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_PORT: "5432"
+      DATABASE_NAME: analysis_bi
+      DATABASE_USER: analysis_bi
+      DATABASE_PASSWORD_FILE: /run/secrets/analysis_db_password
+      NATS_URL: nats://nats:4222
+      TZ: ${TZ:-America/Boa_Vista}
+    expose:
+      - "8080"
+    secrets:
+      - analysis_db_password
+    networks:
+      - acdg-bv
+    depends_on:
+      postgres:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost:8080/healthz || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s

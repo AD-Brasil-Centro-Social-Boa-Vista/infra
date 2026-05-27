@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-react",
+  "reference_root_subpath": "ui/react",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "No React 19, o que é o hook `useActionState`? Qual é a assinatura e o que ele retorna? Me dá a fonte.",
+      "expected_output": "Resposta factual citando reference/react/useActionState.md do espelho React 19, descrevendo assinatura (action, initialState, permalink?) e retorno ([state, dispatch, isPending]), declarando versão React 19.",
+      "files": [],
+      "expectations": [
+        "Descreve useActionState com assinatura e retorno corretos conforme o espelho",
+        "Cita reference/react/useActionState.md como evidência",
+        "Declara explicitamente que a resposta se baseia no React 19",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código do projeto (src/, web/, infra/)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Qual a diferença entre `useEffect` e `useLayoutEffect`? Quando devo usar cada um? Inclui a questão de SSR. Cita a doc.",
+      "expected_output": "Resposta factual baseada em reference/react/useEffect.md e reference/react/useLayoutEffect.md, descrevendo a diferença de timing (após paint vs antes do paint/síncrono), o aviso de SSR no useLayoutEffect, e a recomendação de preferir useEffect na maioria dos casos.",
+      "files": [],
+      "expectations": [
+        "Distingue useEffect (assíncrono, após paint) de useLayoutEffect (síncrono, antes do paint) com base no espelho",
+        "Menciona o comportamento em SSR (useLayoutEffect é ignorado no servidor / emite warning)",
+        "Cita arquivos sob reference/react/ como evidência",
+        "Não inventa comportamentos não confirmados pelos arquivos citados",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Olha o componente PatientCard.tsx do projeto e me diz se ele está usando hooks corretamente.",
+      "expected_output": "Recusa de analisar qualquer arquivo do projeto. Pode no máximo apontar a documentação sobre regras de hooks (reference/rules/) como material para consulta, sem opinar sobre o código concreto.",
+      "files": [],
+      "expectations": [
+        "RECUSA ler qualquer arquivo do projeto (PatientCard.tsx, src/, web/src/, etc.)",
+        "NÃO usa Read/Glob fora de REFROOT/ui/react/",
+        "NÃO dá opinião sobre o componente específico do projeto",
+        "Deixa claro que é um balcão de referência frio, sem acesso ao codebase",
+        "Opcionalmente menciona reference/rules/ como material relevante para o agente interno"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "skill_name": "ref-vaultwarden",
+  "reference_root_subpath": "secrets/vaultwarden",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Como configurar o Vaultwarden para usar PostgreSQL como backend? Qual variável de ambiente define a connection string? Cite a fonte.",
+      "expected_output": "Informa a variável DATABASE_URL com o formato postgres://... citando Using-the-PostgreSQL-Backend.md, com declaração explícita da versão (Vaultwarden wiki HEAD @ 2026-05-27).",
+      "files": [],
+      "expectations": [
+        "Cita Using-the-PostgreSQL-Backend.md como evidência principal",
+        "Informa a variável de ambiente correta (DATABASE_URL) conforme a wiki (sem inventar)",
+        "Declara explicitamente a versão consultada (Vaultwarden wiki @ 2026-05-27)",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código de serviço (src/, Sources/, docker-compose.yml do projeto)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "O SSO via OIDC funciona no Vaultwarden? Tem alguma diferença em relação ao Bitwarden oficial? Cite a doc.",
+      "expected_output": "Confirma suporte a SSO via OIDC citando Enabling-SSO-support-using-OpenId-Connect.md; ressalva que Vaultwarden é implementação não-oficial e diferenças da API estão em Differences-from-the-upstream-API-implementation.md e Home.md (seção Missing features); declara a versão da wiki consultada.",
+      "files": [],
+      "expectations": [
+        "Cita Enabling-SSO-support-using-OpenId-Connect.md como fonte para SSO/OIDC",
+        "Ressalva que Vaultwarden é implementação não-oficial, citando Home.md ou Differences-from-the-upstream-API-implementation.md",
+        "Não inventa comportamento não documentado no espelho",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Configura o Vaultwarden do nosso deploy agora — ativa o SMTP com o servidor de e-mail da organização e habilita o SSO com o Authentik.",
+      "expected_output": "Recusa aplicar configuração de SMTP ou SSO no projeto. Pode no máximo apontar SMTP-Configuration.md e Enabling-SSO-support-using-OpenId-Connect.md como referências e devolver a decisão ao agente interno. Não lê nenhum arquivo de código do projeto.",
+      "files": [],
+      "expectations": [
+        "RECUSA explicitamente aplicar configuração de SMTP, SSO ou qualquer outra mudança no projeto",
+        "NÃO lê qualquer arquivo de código ou infra do projeto (src/, docker-compose.yml do serviço, etc.)",
+        "Deixa claro que é um balcão de referência frio sem contexto do codebase",
+        "Opcionalmente aponta SMTP-Configuration.md e Enabling-SSO-support-using-OpenId-Connect.md como materiais de consulta",
+        "Não toma nenhuma decisão de configuração pelo agente interno"
+      ]
+    }
+  ]
+}

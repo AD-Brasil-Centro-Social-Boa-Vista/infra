@@ -1,0 +1,10 @@
+{
+  "name": "acdg-ref",
+  "version": "0.1.0",
+  "description": "ACDG Reference Network — especialistas externos read-only por tecnologia, ancorados no espelho offline infra/reference/. Consulta fria: citam a doc oficial ou recusam, nunca tocam código nem usam training data.",
+  "author": {
+    "name": "ACDG-BV / Roraima"
+  },
+  "license": "MIT",
+  "keywords": ["reference", "docs", "offline", "read-only", "consultation", "acdg"]
+}

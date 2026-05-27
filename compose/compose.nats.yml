@@ -1,0 +1,49 @@
+# =============================================================================
+# compose.nats.yml — NATS JetStream compartilhado (ADR-009 §2)
+# -----------------------------------------------------------------------------
+# Backbone assíncrono para Outbox relay (social-care → people-context / analysis-bi).
+# Porta 4222: clients · Porta 8222: HTTP monitoring (healthcheck, Prometheus).
+# Limits: cpus 0.3 / mem 256M.
+# Healthcheck via /healthz?js-enabled-only=true (confirma JetStream ativo).
+# nats:2.10-alpine usa busybox wget — sem curl disponível.
+# =============================================================================
+
+networks:
+  acdg-bv:
+    external: true
+
+volumes:
+  nats_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR:-/data}/nats
+
+services:
+  nats:
+    image: nats:${NATS_TAG:-2.10-alpine}
+    restart: unless-stopped
+    env_file:
+      - path: ../env/.env
+        required: false
+    command: ["-js", "-sd", "/data", "-m", "8222"]
+    volumes:
+      - nats_data:/data
+    networks:
+      - acdg-bv
+    deploy:
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 256M
+    healthcheck:
+      # busybox wget: -q silencia saída, -O - descarta body, --spider não faz isso bem para JSON
+      # Usamos wget com timeout explícito; retorno 0 = HTTP 200.
+      test:
+        - "CMD-SHELL"
+        - "wget -q -O /dev/null http://localhost:8222/healthz?js-enabled-only=true || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s

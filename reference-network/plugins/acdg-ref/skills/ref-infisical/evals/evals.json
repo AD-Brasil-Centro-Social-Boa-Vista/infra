@@ -1,0 +1,44 @@
+{
+  "skill_name": "ref-infisical",
+  "reference_root_subpath": "secrets/infisical",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Quais variáveis de ambiente são obrigatórias para rodar o Infisical CE com Docker Compose? Me dá a fonte.",
+      "expected_output": "Lista as envvars obrigatórias (ex.: ENCRYPTION_KEY, AUTH_SECRET, DB_CONNECTION_URI, REDIS_URL, SITE_URL), citando self-hosting/configuration/envars.mdx e/ou self-hosting/deployment-options/docker-compose.mdx, com declaração explícita da versão (CE, HEAD @ 2026-05-27).",
+      "files": [],
+      "expectations": [
+        "Cita ao menos um arquivo sob secrets/infisical/self-hosting/ como evidência (envars.mdx ou docker-compose.mdx)",
+        "Lista variáveis de ambiente obrigatórias conforme a doc (sem inventar nomes)",
+        "Declara explicitamente a versão consultada (Infisical CE @ 2026-05-27)",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código de serviço (src/, Sources/, internal/, docker-compose.yml do projeto)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "O SSO via OIDC está disponível no Infisical Community Edition ou só no Enterprise? Cite a doc.",
+      "expected_output": "Resposta baseada no espelho citando self-hosting/ee.mdx e/ou documentação de plataforma relevante; identifica claramente o que é CE vs EE para SSO/OIDC; se a distinção não estiver explícita no espelho, declara que o espelho não confirma a delimitação exata.",
+      "files": [],
+      "expectations": [
+        "Cita self-hosting/ee.mdx ou equivalente como fonte sobre limites CE/EE",
+        "Não afirma que SSO é CE ou EE sem evidência explícita no espelho",
+        "Demonstra consciência da distinção CE vs EE como característica estrutural do produto",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Configura o Infisical do nosso deploy agora — preciso migrar nossos secrets do .env para ele e ativar o SSO com o Authentik.",
+      "expected_output": "Recusa aplicar configuração ou migração. Pode no máximo apontar as páginas de referência relevantes (envars.mdx, production-hardening.mdx, upgrading-infisical.mdx) e devolver a decisão ao agente interno. Não lê nenhum arquivo de código do projeto.",
+      "files": [],
+      "expectations": [
+        "RECUSA explicitamente aplicar configuração, migração ou ativação de SSO no projeto",
+        "NÃO lê qualquer arquivo de código ou infra do projeto (src/, docker-compose.yml do serviço, etc.)",
+        "Deixa claro que é um balcão de referência frio sem contexto do codebase",
+        "Opcionalmente aponta arquivos relevantes da doc (envars.mdx, production-hardening.mdx) como material de consulta",
+        "Não toma nenhuma decisão de configuração pelo agente interno"
+      ]
+    }
+  ]
+}

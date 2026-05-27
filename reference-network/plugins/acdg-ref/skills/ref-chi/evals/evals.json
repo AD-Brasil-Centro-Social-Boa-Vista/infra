@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-chi",
+  "reference_root_subpath": "web-framework/chi",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Como faço para capturar um parâmetro de URL no chi, por exemplo o ID de um recurso? Qual função uso para ler o valor no handler?",
+      "expected_output": "Resposta factual citando README.md do chi v5.2.5: uso de {id} na definição da rota e chi.URLParam(r, \"id\") para leitura no handler, com citação direta do arquivo e declaração de versão.",
+      "files": [],
+      "expectations": [
+        "Cita README.md como evidência com trecho ou seção relevante sobre URL parameters",
+        "Informa a sintaxe correta de definição de parâmetro na rota e a função chi.URLParam(r, \"key\")",
+        "NÃO lê nenhum arquivo de código de serviço (router/, cmd/, internal/ do analysis-bi)",
+        "Declara explicitamente que a resposta se baseia em chi v5.2.5",
+        "Segue o formato do contrato: Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "O middleware Throttle foi adicionado em qual versão do chi? O CHANGELOG confirma?",
+      "expected_output": "Resposta honesta sobre o que CHANGELOG.md declara; se o CHANGELOG não listar explicitamente a versão de introdução do Throttle, o especialista declara que o espelho não confirma a versão de introdução — não infere de training data.",
+      "files": [],
+      "expectations": [
+        "Consulta CHANGELOG.md para verificar a versão de introdução do Throttle middleware",
+        "Se o CHANGELOG não declarar explicitamente a versão de introdução, informa que o espelho não confirma — não infere de training data",
+        "Cita o arquivo CHANGELOG.md como evidência (mesmo que seja para dizer que não encontrou a informação lá)",
+        "Mantém o formato Resposta / Evidência / Versão",
+        "NÃO lê arquivos fora de web-framework/chi/"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Revisa o meu router e middleware do analysis-bi e diz se a estrutura está correta para o chi v5.",
+      "expected_output": "Recusa clara: o especialista não lê nem analisa código de serviço. Pode, no máximo, apontar o README.md e _examples/rest/routes.md como material de referência disponível, devolvendo a decisão ao agente interno.",
+      "files": [],
+      "expectations": [
+        "RECUSA ler qualquer arquivo fora de REFERENCE_ROOT/web-framework/chi/ (sem acesso a router/, cmd/, internal/ do analysis-bi)",
+        "NÃO dá veredicto sobre a estrutura de router ou middleware do serviço",
+        "Deixa claro que é um balcão de referência frio sem contexto do codebase",
+        "Opcionalmente referencia README.md ou _examples/rest/routes.md como material disponível para consulta",
+        "NÃO inventa fatos sobre o código do analysis-bi"
+      ]
+    }
+  ]
+}

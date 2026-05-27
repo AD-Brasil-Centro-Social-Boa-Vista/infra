@@ -1,0 +1,44 @@
+{
+  "skill_name": "ref-docker-compose",
+  "reference_root_subpath": "infra/docker-compose",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Qual é a sintaxe correta de deploy.resources.limits para limitar CPU e memória de um serviço no Compose? Isso funciona sem Docker Swarm? Me dá a fonte.",
+      "expected_output": "Sintaxe do bloco deploy.resources.limits com cpus (string), memory (byte value) e pids (inteiro), confirmando que funciona em Compose puro sem Swarm, citando reference/compose-file/deploy.md seção resources.",
+      "files": [],
+      "expectations": [
+        "Apresenta a sintaxe correta de deploy.resources.limits com os subcampos cpus, memory e pids",
+        "Confirma que deploy.resources funciona em Compose puro (sem Docker Swarm), baseando-se no espelho",
+        "Cita reference/compose-file/deploy.md como evidência (seção resources ou resources.limits)",
+        "Declara explicitamente a versão consultada: Compose Specification / Compose v5",
+        "Segue o formato do contrato: Resposta / Evidência / Versão — e NÃO lê nenhum arquivo de código do projeto"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "O campo 'version:' no topo do compose.yml ainda é obrigatório no Compose moderno? O que acontece se eu omitir? E o que é o 'include:' — funciona recursivamente? Cite a doc.",
+      "expected_output": "Confirma que version: é obsoleto (apenas informativo, gera aviso), pode ser omitido; Compose v2 e v5 ignoram o valor. Confirma que include: funciona recursivamente. Cita version-and-name.md e include.md.",
+      "files": [],
+      "expectations": [
+        "Afirma que version: é obsoleto/opcional e que Compose v2/v5 ignoram seu valor (cita reference/compose-file/version-and-name.md)",
+        "Confirma que include: aplica recursivamente — um arquivo incluído com seu próprio include: dispara o carregamento desses arquivos também (cita reference/compose-file/include.md)",
+        "Demonstra consciência de versão: distingue comportamento do Compose moderno (v2/v5) vs legado v1",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Monta o compose.yml da orquestração ACDG com os 4 serviços + Caddy + Postgres, usando include: modular e secrets via file:. Leia os compose files do projeto para ver o que já existe.",
+      "expected_output": "Recusa dupla: (a) ler/analisar arquivos compose do projeto e (b) gerar o compose.yml do projeto ACDG. Pode, no máximo, fornecer a referência dos campos/sintaxe citando a doc (include:, secrets, healthcheck, depends_on), devolvendo a decisão de topologia ao agente interno.",
+      "files": [],
+      "expectations": [
+        "RECUSA acessar/ler qualquer arquivo compose ou de código do projeto (não usa Read/Glob fora de infra/docker-compose/)",
+        "NÃO gera o compose.yml do projeto ACDG nem decide a topologia (número de serviços, nomes, configurações específicas)",
+        "Deixa claro que é um balcão de referência frio, sem contexto do codebase ACDG",
+        "Opcionalmente aponta os arquivos de referência relevantes (reference/compose-file/include.md, reference/compose-file/secrets.md, manuals/compose/how-tos/use-secrets.md) como material de consulta, sem opinar sobre o caso concreto",
+        "Não inventa campos ou topologia não confirmados pela doc do espelho"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+# =============================================================================
+# ACDG-BV — Orquestração single-VPS (ADR-009) · Docker Compose v5 ("Mont Blanc")
+# -----------------------------------------------------------------------------
+# Compose Spec — SEM campo `version:`. Raiz que faz `include:` dos bounded contexts.
+# Subir: docker compose up -d           (núcleo)
+#        docker compose --profile analytics up -d        (+ analysis-bi)
+#        docker compose --profile observability up -d     (+ Prom/Grafana/Loki)
+# Isolamento PROD/DEV: via COMPOSE_PROJECT_NAME (ADR-012). Secrets via file: (ADR-011).
+# =============================================================================
+name: acdg-bv
+
+include:
+  # dados / backbone
+  - compose.postgres.yml          # Postgres 16 único, database-per-service
+  - compose.nats.yml              # NATS JetStream compartilhado (reconcilia ADR-009 §2)
+  # plataforma
+  - compose.secrets.yml           # Infisical CE + Vaultwarden (ADR-011)
+  - compose.auth.yml              # Authentik (OIDC) — server + worker + redis
+  - compose.proxy.yml             # Caddy (TLS automático + HTTP/3)
+  # aplicação (ACDG)
+  - compose.web.yml               # front + BFF (TanStack Start)
+  - compose.social-care.yml       # Swift/Vapor — fonte de verdade + audit
+  - compose.people-context.yml    # Bun/Elysia — registro de identidade
+  - compose.analysis-bi.yml       # Go — indicadores (profile: analytics)
+  # observabilidade (profile)
+  - compose.observability.yml     # Prometheus + Grafana + Loki + Alertmanager
+
+networks:
+  acdg-bv:
+    name: acdg-bv
+    driver: bridge

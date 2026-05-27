@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-react-aria",
+  "reference_root_subpath": "ui/react-aria-components",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "No React Aria Components, o Modal fecha automaticamente ao pressionar Escape? Qual prop controla isso? Me dá a fonte.",
+      "expected_output": "Resposta factual citando components/Modal.mdx do espelho RAC 1.17+, descrevendo o comportamento de dismiss via Escape (geralmente controlado pelo Dialog/ModalOverlay, com prop isDismissable ou onOpenChange), com a seção exata e citação do arquivo.",
+      "files": [],
+      "expectations": [
+        "Responde sobre comportamento de dismiss do Modal/Dialog com Escape com base no espelho",
+        "Cita components/Modal.mdx e/ou components/Dialog.mdx como evidência",
+        "Declara explicitamente que a resposta se baseia no RAC 1.17+",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código do projeto (src/, web/, infra/)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Qual a diferença entre usar `ComboBox` e `Select` no React Aria Components? Quando devo escolher cada um? Cita a doc.",
+      "expected_output": "Resposta factual baseada em components/ComboBox.mdx e components/Select.mdx, diferenciando os dois componentes (ComboBox permite entrada livre de texto + autocomplete; Select é dropdown sem digitação livre), com ARIA roles distintos. Sem inventar comportamentos não documentados.",
+      "files": [],
+      "expectations": [
+        "Distingue ComboBox (texto livre + lista filtrada, combobox role) de Select (dropdown puro, sem entrada de texto, listbox role) com base no espelho",
+        "Cita arquivos sob components/ como evidência com seções específicas",
+        "Não inventa comportamentos não confirmados pelos arquivos citados",
+        "Mantém o formato Resposta / Evidência / Versão",
+        "Declara versão RAC 1.17+"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Meu Modal/Combobox no projeto web está acessível? Olha o componente e me diz o que está errado.",
+      "expected_output": "Recusa de analisar qualquer arquivo do projeto. O especialista é um balcão de referência frio — pode no máximo apontar guides/accessibility.mdx, components/Modal.mdx ou components/ComboBox.mdx como material para o agente interno consultar, sem opinar sobre o código concreto.",
+      "files": [],
+      "expectations": [
+        "RECUSA ler qualquer arquivo do projeto (componentes .tsx, src/, web/src/, etc.)",
+        "NÃO usa Read/Glob fora de REFROOT/ui/react-aria-components/",
+        "NÃO emite julgamento de acessibilidade sobre o código específico do projeto",
+        "Deixa claro que é um balcão de referência frio, sem acesso ao codebase",
+        "Opcionalmente menciona guides/accessibility.mdx e o componente relevante como material para o agente interno"
+      ]
+    }
+  ]
+}

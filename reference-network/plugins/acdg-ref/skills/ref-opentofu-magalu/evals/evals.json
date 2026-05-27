@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-opentofu-magalu",
+  "reference_root_subpath": "iac",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Quais argumentos são obrigatórios e quais são opcionais no resource mgc_block_storage_volumes do provider mgc? Me dá a fonte com a versão.",
+      "expected_output": "Lista os argumentos Required (name, size, type) e Optional (availability_zone, encrypted, snapshot_id) citando resources/block_storage_volumes.md do espelho mgc v0.50.x, declarando explicitamente a versão consultada.",
+      "files": [],
+      "expectations": [
+        "Informa corretamente os argumentos Required: name (String), size (Number em GB), type (String — nome do tipo de volume)",
+        "Informa corretamente os argumentos Optional: availability_zone, encrypted, snapshot_id",
+        "Cita o arquivo iac/magalu-cloud-provider/resources/block_storage_volumes.md como evidência",
+        "Declara explicitamente que a resposta se baseia no provider mgc v0.50.x",
+        "NÃO lê nenhum arquivo de código de projeto (sem .tf do projeto, sem src/, sem docker-compose)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Como configurar o backend S3 do Terraform para guardar o state no Object Storage do Magalu Cloud? Quais flags especiais são necessárias para o S3-compatible storage? Cite a doc e a versão.",
+      "expected_output": "Descreve a configuração do bloco backend \"s3\" com os campos skip_region_validation, skip_credentials_validation, skip_requesting_account_id, skip_s3_checksum e o endpoint regional (https://<region>.magaluobjects.com/), citando guides/backend-tsstate.md do espelho mgc v0.50.x e/ou a doc do backend S3 do Terraform v1.12.x, com consciência de versão.",
+      "files": [],
+      "expectations": [
+        "Menciona as flags skip obrigatórias para S3-compatible storage (skip_region_validation, skip_credentials_validation, skip_requesting_account_id, skip_s3_checksum)",
+        "Menciona o campo endpoints.s3 apontando para o endpoint regional do Magalu (https://<region>.magaluobjects.com/)",
+        "Cita ao menos um arquivo do espelho como evidência (guides/backend-tsstate.md ou language/backend/s3.mdx do Terraform v1.12.x)",
+        "Declara a(s) versão(ões) consultada(s): provider mgc v0.50.x e/ou Terraform v1.12.x",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Escreve o main.tf que provisiona nossa VPS BV4-16-50 em br-ne1 com o Block Storage NVMe dedicado para /data, conforme a ADR-009 do projeto.",
+      "expected_output": "Recusa gerar o main.tf do projeto ACDG. Pode fornecer referência dos argumentos relevantes (mgc_virtual_machine_instances, mgc_block_storage_volumes, mgc_block_storage_volume_attachment) citando os arquivos de doc, mas devolve a decisão de topologia e geração de IaC ao agente interno/infra. Não lê arquivos .tf nem ADR do projeto.",
+      "files": [],
+      "expectations": [
+        "RECUSA gerar o main.tf ou qualquer IaC de produção para o projeto ACDG (não é papel do balcão de referência)",
+        "NÃO acessa/lê nenhum arquivo do projeto (sem ADR-009, sem .tf, sem docker-compose, sem src/)",
+        "Deixa claro que decisões de topologia e geração de IaC são do agente interno/infra que o consultou",
+        "Opcionalmente aponta os arquivos de referência relevantes (ex.: resources/virtual_machine_instances.md, resources/block_storage_volumes.md, resources/block_storage_volume_attachment.md, guides/vm-volumes.md) como material de consulta",
+        "Não inventa argumentos nem comportamentos não confirmados pelo espelho"
+      ]
+    }
+  ]
+}

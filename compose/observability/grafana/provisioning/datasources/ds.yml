@@ -1,0 +1,36 @@
+# =============================================================================
+# ds.yml — auto-provisionamento de datasources no Grafana OSS
+# Montado read-only em /etc/grafana/provisioning/datasources/ds.yml
+# Datasources: Prometheus (métricas) + Loki (logs)
+# =============================================================================
+
+apiVersion: 1
+
+datasources:
+
+  # Prometheus — fonte de métricas primária
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    uid: prometheus
+    url: http://prometheus:9090
+    isDefault: true
+    editable: false
+    jsonData:
+      httpMethod: POST
+      timeInterval: "15s"
+
+  # Loki — agregação de logs de todos os containers
+  - name: Loki
+    type: loki
+    access: proxy
+    uid: loki
+    url: http://loki:3100
+    isDefault: false
+    editable: false
+    jsonData:
+      # Correlação com Prometheus via label `service`
+      derivedFields:
+        - name: "trace_id"
+          matcherRegex: "traceId=(\\w+)"
+          url: ""

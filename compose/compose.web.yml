@@ -1,0 +1,51 @@
+# =============================================================================
+# compose.web.yml — Front + BFF (TanStack Start · Node 24) (ADR-009 §4)
+# -----------------------------------------------------------------------------
+# ATENÇÃO: web está pré-Sprint 0 — imagem ainda não publicada.
+# Ajuste WEB_TAG quando o CI do repositório web existir e publicar imagem.
+# -----------------------------------------------------------------------------
+# Único entrypoint público da aplicação (Caddy faz TLS + reverse proxy).
+# Orquestra chamadas a social-care e people-context; injeção de Bearer (OIDC).
+# O browser NUNCA vê token, URL de backend ou secret (ADR-008).
+# Limits: cpus 1.0 / mem 512M.
+# Healthcheck: GET /healthz (ADR-014 — endpoint padrão de liveness).
+# =============================================================================
+
+networks:
+  acdg-bv:
+    external: true
+
+services:
+  web:
+    image: ${REGISTRY:-ghcr.io/acdgbrasil}/web:${WEB_TAG:-latest}
+    restart: unless-stopped
+    env_file:
+      - path: ../env/.env
+        required: false
+    environment:
+      NODE_ENV: production
+      DOMAIN: ${DOMAIN:-acdg-bv.org.br}
+      OIDC_ISSUER: ${OIDC_ISSUER:-}
+      OIDC_JWKS_URL: ${OIDC_JWKS_URL:-}
+      SOCIAL_CARE_URL: http://social-care:8080
+      PEOPLE_URL: http://people-context:3000
+    expose:
+      - "3000"
+    networks:
+      - acdg-bv
+    depends_on:
+      social-care:
+        condition: service_healthy
+      people-context:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost:3000/healthz || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s

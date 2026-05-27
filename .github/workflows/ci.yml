@@ -1,0 +1,180 @@
+# =============================================================================
+# CI — ACDG-BV infra repo
+# -----------------------------------------------------------------------------
+# Jobs:
+#   compose-validate  — valida composição Compose v5 mergeada (+ profiles)
+#   terraform-validate — fmt -check + init -backend=false + validate
+#   shellcheck         — lint em scripts/*.sh e compose/postgres/init/*.sh
+#   yaml-lint          — yamllint nos arquivos compose/*.yml
+#
+# Supply-chain hardening: todas as actions são fixadas em SHA de commit.
+# Tags estão nos comentários ao lado do SHA para referência humana.
+# =============================================================================
+
+on:
+  push:
+    branches: [main]
+  pull_request: {}
+
+permissions:
+  contents: read
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # 1. compose-validate
+  #    Mescla todo o Compose v5 via `docker compose config` e valida que a
+  #    configuração é parseable, incluindo os profiles opcionais.
+  # ---------------------------------------------------------------------------
+  compose-validate:
+    name: Compose v5 — validate merged config
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Criar secrets dummy para validação do Compose
+        run: |
+          mkdir -p /tmp/acdg-secrets
+          for s in \
+            postgres_superuser_password \
+            social_care_db_password \
+            people_db_password \
+            analysis_db_password \
+            authentik_db_password \
+            authentik_secret_key \
+            infisical_db_password \
+            infisical_encryption_key \
+            infisical_auth_secret \
+            vaultwarden_admin_token \
+            grafana_admin_password; do
+            echo dummy > /tmp/acdg-secrets/$s
+          done
+
+      - name: Criar .env a partir de .env.example
+        run: cp env/.env.example env/.env
+
+      - name: Validate — core (sem profiles)
+        run: |
+          SECRETS_DIR=/tmp/acdg-secrets \
+          DATA_DIR=/tmp/acdg-data \
+          docker compose -f compose/compose.yml config >/dev/null
+
+      - name: Validate — profile analytics
+        run: |
+          SECRETS_DIR=/tmp/acdg-secrets \
+          DATA_DIR=/tmp/acdg-data \
+          docker compose -f compose/compose.yml \
+            --profile analytics \
+            config >/dev/null
+
+      - name: Validate — profile observability
+        run: |
+          SECRETS_DIR=/tmp/acdg-secrets \
+          DATA_DIR=/tmp/acdg-data \
+          docker compose -f compose/compose.yml \
+            --profile observability \
+            config >/dev/null
+
+  # ---------------------------------------------------------------------------
+  # 2. terraform-validate
+  #    fmt -check garante formatação canônica; validate confirma semântica HCL.
+  #    Backend desabilitado (-backend=false) — sem acesso ao Object Storage em CI.
+  #    Usa Terraform CLI (valida o mesmo HCL do OpenTofu/tofuzin — compatível).
+  # ---------------------------------------------------------------------------
+  terraform-validate:
+    name: Terraform — fmt + validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+        with:
+          terraform_version: "~1.9"
+
+      - name: Terraform fmt check (recursive)
+        run: |
+          if [[ ! -d terraform ]]; then
+            echo "::notice::Diretório terraform/ ainda não existe — fmt check ignorado."
+            exit 0
+          fi
+          terraform fmt -check -recursive terraform/
+
+      - name: Terraform init (sem backend)
+        run: |
+          if [[ ! -d terraform ]]; then
+            echo "::notice::Diretório terraform/ ainda não existe — init ignorado."
+            exit 0
+          fi
+          cd terraform && terraform init -backend=false
+
+      - name: Terraform validate
+        run: |
+          if [[ ! -d terraform ]]; then
+            echo "::notice::Diretório terraform/ ainda não existe — validate ignorado."
+            exit 0
+          fi
+          cd terraform && terraform validate
+
+  # ---------------------------------------------------------------------------
+  # 3. shellcheck
+  #    Analisa scripts/*.sh (quando existir) e compose/postgres/init/*.sh.
+  #    shellcheck é instalado via apt (pré-instalado no ubuntu-latest ≥ 22.04).
+  #    Usamos `find` para colher os arquivos, garantindo que scripts/ opcional
+  #    não quebre o job quando o diretório ainda não existir.
+  # ---------------------------------------------------------------------------
+  shellcheck:
+    name: ShellCheck — scripts/*.sh + postgres init scripts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: ShellCheck
+        run: |
+          # Coleta arquivos shell dos diretórios relevantes (scripts/ pode não existir ainda).
+          mapfile -t files < <(
+            find compose/postgres/init -name "*.sh" 2>/dev/null
+            find scripts -name "*.sh" 2>/dev/null || true
+          )
+          if [[ ${#files[@]} -eq 0 ]]; then
+            echo "Nenhum arquivo .sh encontrado — nada a checar."
+            exit 0
+          fi
+          echo "Checando ${#files[@]} arquivo(s): ${files[*]}"
+          shellcheck --severity=warning "${files[@]}"
+
+  # ---------------------------------------------------------------------------
+  # 4. yaml-lint
+  #    Valida sintaxe YAML nos arquivos compose/*.yml.
+  #    Config relaxada: linha longa permitida (compose files são verbosos por natureza).
+  # ---------------------------------------------------------------------------
+  yaml-lint:
+    name: yamllint — compose/*.yml
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: yamllint
+        uses: ibiqlik/action-yamllint@2576378a8e339169678f9939646ee3ee325e845c # v3.1.1
+        with:
+          file_or_dir: compose/
+          config_data: |
+            extends: default
+            rules:
+              line-length:
+                # Compose files têm linhas longas (commands, labels, env); relaxamos.
+                max: 200
+                level: warning
+              comments:
+                # Comentários de documentação não precisam de espaço duplo.
+                min-spaces-from-content: 1
+              truthy:
+                # Docker Compose usa "yes"/"no" em alguns contextos legados.
+                allowed-values: ["true", "false", "yes", "no"]

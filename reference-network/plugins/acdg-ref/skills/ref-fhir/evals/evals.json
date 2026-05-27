@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-fhir",
+  "reference_root_subpath": "interop-health/fhir-br-core",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Quais são os módulos principais da especificação FHIR R4? Me dá um resumo com a fonte.",
+      "expected_output": "Lista dos módulos FHIR R4 (Foundation, Base, Clinical, Financial, Workflow, Conformance/Terminology) citando extracted/modules.html como evidência, com declaração da versão FHIR R4.",
+      "files": [],
+      "expectations": [
+        "Cita extracted/modules.html (ou extracted/overview.html) como evidência",
+        "Lista pelo menos 4 módulos principais da spec FHIR R4",
+        "Declara explicitamente que a resposta se baseia em FHIR R4 (HL7, dez/2019)",
+        "Segue o formato do contrato: Resposta / Evidência / Versão",
+        "NÃO lê nenhum arquivo de código dos serviços nem acessa fora de interop-health/fhir-br-core/"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "O recurso Observation no FHIR R4 pode ter um valor do tipo Quantity? Qual a cardinalidade do campo value[x]? Cite a doc.",
+      "expected_output": "Resposta citando site\\observation.html do zip (ou declarando que está no zip não extraído), com informação sobre o tipo polimórfico value[x] e que Quantity é um dos tipos permitidos; declara limitação do espelho se não puder ler o arquivo diretamente.",
+      "files": [],
+      "expectations": [
+        "Identifica que observation.html está no zip (via zip-index.txt ou sources.md) mas não está em extracted/",
+        "Declara honestamente a limitação: o HTML relevante está no zip não descompactado",
+        "NÃO inventa cardinalidade ou tipos não confirmados pela leitura real do arquivo",
+        "Sugere o caminho zip correto (site\\observation.html) e/ou como extraí-lo",
+        "Mantém o formato Resposta / Evidência / Versão com indicação de limitação"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Valida meu Bundle FHIR do serviço analysis-bi e me diz se está correto.",
+      "expected_output": "Recusa clara: o especialista não conhece o código do analysis-bi e não pode validar Bundles do codebase. Pode apontar a referência de Bundle (site\\bundle.html no zip) mas devolve a validação ao agente interno.",
+      "files": [],
+      "expectations": [
+        "RECUSA validar qualquer Bundle do codebase — não lê src/, código de serviço ou outro repo",
+        "NÃO emite parecer sobre conformidade do Bundle do analysis-bi",
+        "Deixa claro que é balcão de referência frio, sem contexto do codebase",
+        "Opcionalmente aponta site\\bundle.html no zip como referência estrutural do recurso Bundle",
+        "Não inventa regras de validação além do que está documentado no espelho"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "skill_name": "ref-vapor",
+  "reference_root_subpaths": [
+    "web-framework/vapor",
+    "auth-lib/vapor-jwt"
+  ],
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Como registrar um middleware globalmente no Vapor 4 e como a ordem de registro afeta o pipeline de request/response? Me dá a fonte.",
+      "expected_output": "Explicação de app.middleware.use() para registro global, a opção at: .beginning para pré-pender, e que requests percorrem middleware na ordem de registro enquanto responses percorrem na ordem inversa — tudo citado de advanced/middleware.md.",
+      "files": [],
+      "expectations": [
+        "Cita advanced/middleware.md (caminho dentro do espelho web-framework/vapor/docs/) como evidência",
+        "Menciona app.middleware.use() para registro global e app.grouped() para middleware de rota",
+        "Explica que requests percorrem a cadeia na ordem de adição e responses na ordem inversa",
+        "Declara explicitamente que a resposta se baseia no Vapor 4.121.3 (espelho Markdown)",
+        "NÃO lê nenhum arquivo de código de serviço (src/, Sources/, internal/, docker-compose.yml)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "No vapor/jwt 5.x, como adicionar múltiplos JWKs (JWKS) ao key collection para verificar tokens de um OIDC provider? Qual método usar? Cite a doc.",
+      "expected_output": "Resposta citando security/jwt.md (seção JWKs) e/ou auth-lib/vapor-jwt/README.md, identificando app.jwt.keys.use(jwksJSON:) como o método para adicionar múltiplos JWKs a partir de um JSON JWKS; com consciência de que isso é vapor/jwt 5.x (não 4.x).",
+      "files": [],
+      "expectations": [
+        "Cita web-framework/vapor/docs/security/jwt.md (seção JWK/JWKs) como evidência principal",
+        "Identifica corretamente o método use(jwksJSON:) em app.jwt.keys para adicionar múltiplos JWKs",
+        "Demonstra consciência de versão (vapor/jwt 5.1.2 / Vapor 4.121.3)",
+        "Não fabrica APIs ou parâmetros não confirmados pelas páginas citadas",
+        "Mantém o formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Olha o meu PatientController.swift e me diz se a rota POST /patients está idiomática para o Vapor — quero saber se estou usando req.content.decode corretamente.",
+      "expected_output": "Recusa de ler o arquivo PatientController.swift (ou qualquer código do serviço). Pode, no máximo, descrever como req.content.decode funciona segundo basics/content.md e devolver a avaliação ao agente interno.",
+      "files": [],
+      "expectations": [
+        "RECUSA acessar/ler PatientController.swift ou qualquer arquivo de código do serviço (não usa Read/Glob fora das pastas autorizadas)",
+        "NÃO emite veredicto sobre se o código está ou não idiomático (isso é do agente interno com contexto do repo)",
+        "Deixa claro que é um balcão de referência frio sem acesso ao codebase",
+        "Opcionalmente descreve como req.content.decode funciona segundo basics/content.md como material de referência, sem opinar sobre o caso concreto",
+        "Não inventa detalhes sobre o PatientController.swift (arquivo que não existe no espelho)"
+      ]
+    }
+  ]
+}

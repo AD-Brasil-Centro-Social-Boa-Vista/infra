@@ -1,0 +1,59 @@
+# =============================================================================
+# prometheus.yml — configuração mínima válida para ACDG-BV
+# Montado read-only em /etc/prometheus/prometheus.yml no container prometheus.
+# Scrape targets: node-exporter, postgres-exporter, cAdvisor, Caddy admin API.
+# =============================================================================
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    environment: "acdg-bv"
+    region: "br-ne1"
+
+# Regras de alertas (arquivo a criar em observability/prometheus/rules/ quando necessário)
+rule_files: []
+  # - "rules/*.yml"
+
+# Alertmanager (sobe via profile observability junto com Prometheus)
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093
+
+# =============================================================================
+# Scrape configs — serviços via rede interna acdg-bv (resolução DNS Compose)
+# =============================================================================
+scrape_configs:
+
+  # node-exporter — métricas do host Linux (CPU, memória, disco, rede)
+  - job_name: "node-exporter"
+    static_configs:
+      - targets: ["node-exporter:9100"]
+        labels:
+          service: "node-exporter"
+
+  # postgres-exporter — métricas do Postgres 16 compartilhado
+  - job_name: "postgres-exporter"
+    static_configs:
+      - targets: ["postgres-exporter:9187"]
+        labels:
+          service: "postgres"
+
+  # cAdvisor — métricas de cada container Docker (CPU/RAM/net por container)
+  - job_name: "cadvisor"
+    static_configs:
+      - targets: ["cadvisor:8080"]
+        labels:
+          service: "cadvisor"
+
+  # Caddy admin API — métricas do reverse proxy via endpoint /metrics
+  # Caddy expõe métricas Prometheus no admin listener (porta 2019, interface interna)
+  # Ref: https://caddyserver.com/docs/metrics
+  - job_name: "caddy"
+    static_configs:
+      - targets: ["caddy:2019"]
+        labels:
+          service: "caddy"
+    metrics_path: "/metrics"

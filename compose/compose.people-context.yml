@@ -1,0 +1,56 @@
+# =============================================================================
+# compose.people-context.yml — Bun/Elysia · registro de identidade (ADR-009)
+# -----------------------------------------------------------------------------
+# Porta interna 3000; NÃO exposta diretamente pelo Caddy — consumido só pelo BFF (web).
+# Consome eventos de social-care via NATS JetStream (durable, at-least-once).
+# Limits: cpus 0.5 / mem 512M.
+# Healthcheck: GET /health (liveness) — serviço também expõe /ready (readiness).
+# =============================================================================
+
+networks:
+  acdg-bv:
+    external: true
+
+secrets:
+  people_db_password:
+    file: ${SECRETS_DIR:-/etc/acdg-secrets}/people_db_password
+
+services:
+  people-context:
+    image: ${REGISTRY:-ghcr.io/acdgbrasil}/svc-people-context:${PC_TAG:-latest}
+    restart: unless-stopped
+    env_file:
+      - path: ../env/.env
+        required: false
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_PORT: "5432"
+      DATABASE_NAME: people
+      DATABASE_USER: people
+      DATABASE_PASSWORD_FILE: /run/secrets/people_db_password
+      NATS_URL: nats://nats:4222
+      OIDC_ISSUER: ${OIDC_ISSUER:-}
+      OIDC_JWKS_URL: ${OIDC_JWKS_URL:-}
+      TZ: ${TZ:-America/Boa_Vista}
+    expose:
+      - "3000"
+    secrets:
+      - people_db_password
+    networks:
+      - acdg-bv
+    depends_on:
+      postgres:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost:3000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s

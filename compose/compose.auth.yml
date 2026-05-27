@@ -1,0 +1,178 @@
+# =============================================================================
+# compose.auth.yml — Authentik (OIDC IdP self-hosted)
+# Incluído por compose.yml via `include:`. Não subir isoladamente.
+# ADR-009 §4 / ADR-027 — Authentik substitui Zitadel no deploy BV.
+#
+# Serviços:
+#   authentik-redis   — cache/sessões do Authentik (Redis 7)
+#   authentik-server  — servidor web + API (porta 9000 interna → Caddy)
+#   authentik-worker  — tarefas em background (Dramatiq)
+#
+# Postgres compartilhado: usa o serviço `postgres` de compose.postgres.yml
+#   database: authentik   user: authentik   (criado pelo init script)
+#
+# Secrets em /run/secrets/<name> via Compose file: (ADR-011).
+#
+# *** NOTA SOBRE SECRETS NO AUTHENTIK ***
+# Authentik NÃO suporta o sufixo `_FILE` (convenção Docker Official Images).
+# A forma suportada é o URI `file:///run/secrets/<nome>` passado diretamente
+# como valor da variável de ambiente. Isso é documentado em:
+#   reference/auth-idp/authentik/install-config/configuration/configuration.mdx
+# Linha: `file://<name>` Loads the value from the file `<name>`.
+# Portanto as variáveis sensíveis usam: AUTHENTIK_X: "file:///run/secrets/x"
+# =============================================================================
+
+networks:
+  acdg-bv:
+    external: true
+
+secrets:
+  authentik_db_password:
+    file: ${SECRETS_DIR:-/etc/acdg-secrets}/authentik_db_password
+  authentik_secret_key:
+    file: ${SECRETS_DIR:-/etc/acdg-secrets}/authentik_secret_key
+
+volumes:
+  authentik_redis_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR:-/data}/authentik-redis
+  authentik_media:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR:-/data}/authentik-media
+  authentik_certs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR:-/data}/authentik-certs
+
+services:
+  # ---------------------------------------------------------------------------
+  # Redis — cache e broker de tarefas para o Authentik
+  # ---------------------------------------------------------------------------
+  authentik-redis:
+    image: redis:${REDIS_TAG:-7-alpine}
+    restart: unless-stopped
+    networks:
+      - acdg-bv
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - authentik_redis_data:/data
+    env_file:
+      - path: ../env/.env
+        required: false
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # Authentik Server — web + API (expõe :9000 internamente, Caddy faz proxy)
+  # ---------------------------------------------------------------------------
+  authentik-server:
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG:-2026.4}
+    restart: unless-stopped
+    command: server
+    networks:
+      - acdg-bv
+    expose:
+      - "9000"
+    volumes:
+      - authentik_media:/media
+      - authentik_certs:/certs
+    secrets:
+      - authentik_db_password
+      - authentik_secret_key
+    environment:
+      # Postgres (shared — compose.postgres.yml)
+      AUTHENTIK_POSTGRESQL__HOST: postgres
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      # Senha via URI file:// (Authentik lê o arquivo apontado pelo URI)
+      AUTHENTIK_POSTGRESQL__PASSWORD: "file:///run/secrets/authentik_db_password"
+      # Redis
+      AUTHENTIK_REDIS__HOST: authentik-redis
+      # Secret key via URI file://
+      AUTHENTIK_SECRET_KEY: "file:///run/secrets/authentik_secret_key"
+      # SSL desativado para conexão interna Postgres (rede Docker bridge)
+      AUTHENTIK_POSTGRESQL__SSLMODE: disable
+    env_file:
+      - path: ../env/.env
+        required: false
+    deploy:
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 1G
+    depends_on:
+      postgres:
+        condition: service_healthy
+      authentik-redis:
+        condition: service_healthy
+    healthcheck:
+      # /-/health/live/ retorna HTTP 200 enquanto o servidor estiver rodando
+      # /-/health/ready/ retorna HTTP 200 quando a conexão Postgres está OK
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:9000/-/health/live/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # ---------------------------------------------------------------------------
+  # Authentik Worker — tarefas em background (Dramatiq)
+  # ---------------------------------------------------------------------------
+  authentik-worker:
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG:-2026.4}
+    restart: unless-stopped
+    command: worker
+    networks:
+      - acdg-bv
+    volumes:
+      - authentik_media:/media
+      - authentik_certs:/certs
+    secrets:
+      - authentik_db_password
+      - authentik_secret_key
+    environment:
+      # Mesmas vars do server — worker precisa de acesso a Postgres + Redis
+      AUTHENTIK_POSTGRESQL__HOST: postgres
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: "file:///run/secrets/authentik_db_password"
+      AUTHENTIK_REDIS__HOST: authentik-redis
+      AUTHENTIK_SECRET_KEY: "file:///run/secrets/authentik_secret_key"
+      AUTHENTIK_POSTGRESQL__SSLMODE: disable
+    env_file:
+      - path: ../env/.env
+        required: false
+    deploy:
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 512M
+    depends_on:
+      postgres:
+        condition: service_healthy
+      authentik-redis:
+        condition: service_healthy
+    healthcheck:
+      # `ak healthcheck` verifica que o worker está rodando e que Postgres responde
+      # (referência: reference/auth-idp/authentik/sys-mgmt/ops/monitoring.md)
+      test: ["CMD", "ak", "healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s

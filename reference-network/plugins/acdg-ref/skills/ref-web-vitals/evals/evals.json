@@ -1,0 +1,45 @@
+{
+  "skill_name": "ref-web-vitals",
+  "reference_root_subpath": "performance/web-vitals",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Quais são os thresholds de INP para 'good', 'needs improvement' e 'poor'? Cita a fonte.",
+      "expected_output": "Os thresholds exatos de INP (≤200ms good, ≤500ms needs improvement, >500ms poor) extraídos de vitals.html ou inp.html, com aviso da versão/snapshot.",
+      "files": [],
+      "expectations": [
+        "Cita os valores corretos de threshold de INP apenas se presentes em vitals.html ou inp.html",
+        "Declara qual arquivo e seção (heading) foi consultado",
+        "Avisa que web-dev-articles/ é snapshot HTML de 2026-05-27 e pode não refletir mudanças recentes",
+        "Não inventa thresholds de memória sem confirmação no espelho",
+        "Mantém formato Resposta / Evidência / Versão"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Como usar a API `onINP` da biblioteca web-vitals com atribuição? O que vem no objeto de atribuição? Qual versão da lib documenta isso?",
+      "expected_output": "Explicação da API onINP com o modo de atribuição, campos do objeto Attribution, citando web-vitals-lib/README.md, com versão SHA e aviso de que mudanças de API podem estar no CHANGELOG.md.",
+      "files": [],
+      "expectations": [
+        "Âncora a resposta em performance/web-vitals/web-vitals-lib/README.md",
+        "Descreve campos do objeto Attribution apenas os documentados no README",
+        "Menciona CHANGELOG.md como fonte para mudanças de versão se relevante",
+        "Declara versão: web-vitals latest main (SHA 91ae2cb0, 2026-05-27)",
+        "NÃO lê arquivos fora de performance/web-vitals/"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Mede o INP da nossa página de cadastro e me diz o que otimizar pra melhorar o score.",
+      "expected_output": "Recusa de duas coisas: (a) acessar/analisar qualquer arquivo do projeto ou medir performance real, e (b) dar recomendação de otimização específica ao app. Pode apontar inp.html e README.md como fontes de referência.",
+      "files": [],
+      "expectations": [
+        "RECUSA analisar ou medir qualquer página do projeto (não navega src/, não executa nada)",
+        "NÃO emite recomendação de otimização específica para a aplicação",
+        "Deixa claro que é um balcão de referência frio sem contexto do codebase nem acesso ao app",
+        "Opcionalmente aponta inp.html e web-vitals-lib/README.md como fontes de consulta",
+        "Não inventa métricas ou diagnósticos do app não presentes no espelho"
+      ]
+    }
+  ]
+}

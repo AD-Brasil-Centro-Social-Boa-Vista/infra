@@ -1,0 +1,50 @@
+# =============================================================================
+# dependabot.yml — ACDG-BV infra
+# -----------------------------------------------------------------------------
+# Mantém actions do GitHub e imagens Docker atualizadas automaticamente.
+# PRs são abertos semanalmente; merge ainda é manual (sem auto-merge neste repo).
+# =============================================================================
+
+version: 2
+
+updates:
+  # ---------------------------------------------------------------------------
+  # GitHub Actions — atualiza os SHAs pinados nos workflows
+  # ---------------------------------------------------------------------------
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "America/Boa_Vista"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "chore(ci)"
+    reviewers:
+      - "GabrielAderaldo"
+
+  # ---------------------------------------------------------------------------
+  # Docker — atualiza digests/tags nas imagens dos compose files
+  # ---------------------------------------------------------------------------
+  - package-ecosystem: "docker"
+    directory: "/compose"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:30"
+      timezone: "America/Boa_Vista"
+    labels:
+      - "dependencies"
+      - "docker"
+    commit-message:
+      prefix: "chore(compose)"
+    reviewers:
+      - "GabrielAderaldo"
+    # Ignora tags :latest — Dependabot não consegue rastrear floating tags.
+    # As tags de versão (16-alpine, 2.10-alpine, etc.) são rastreadas via .env.example.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
