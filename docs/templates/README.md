@@ -3,6 +3,27 @@
 Material para quando a BV precisar **patchar** um serviço (ADR-BV-001, Trilho B). Enquanto não há
 patch, **não forke nada** (Trilho A: consumir imagens). Forke preguiçosamente, só o que mudar.
 
+## `release-image.yml` (Trilho A — publica imagem no GHCR)
+Faz build do `Dockerfile` do serviço e publica em `ghcr.io/<owner>/<repo>` (com proveniência + SBOM),
+imprimindo o **digest** no summary. É o que **destrava o Trilho A** (o `infra` consome imagens pinadas).
+
+**Instalar (por serviço com Dockerfile):**
+```bash
+cd <serviço>            # svc-social-care | svc-people-context | svc-analysis-bi
+mkdir -p .github/workflows
+cp <infra>/docs/templates/release-image.yml .github/workflows/release-image.yml
+git add .github/workflows/release-image.yml && git commit -m "ci: publish image to GHCR (ADR-BV-001)" && git push
+```
+**Publicar:** crie uma tag SemVer → `git tag v0.1.0 && git push origin v0.1.0` (ou push em `main` → tag `edge`).
+**Pinar no deploy:** copie o `ghcr.io/...@sha256:<digest>` do summary do run para o `image:` do
+`infra/compose/compose.<svc>.yml` e comite no `infra` → o Dependabot passa a abrir PR de atualização.
+
+> - **`web`** ainda **não tem `Dockerfile`** (pré-Sprint 0) — crie um antes de instalar este workflow.
+> - **Visibilidade do pacote GHCR:** por padrão o pacote nasce **privado**. O deploy puxa autenticado
+>   (`docker login ghcr.io` na VPS com um token de leitura). Para imagem **pública**, mude a
+>   visibilidade do package nas settings do repo/org.
+> - **amd64** (VPS Magalu x86); adicione `linux/arm64` no `platforms:` se necessário.
+
 ## `sync-upstream.yml`
 Workflow que mantém o fork sincronizado com o upstream sem perder os patches BV. **Não roda no
 `infra`** — é copiado para dentro do fork.

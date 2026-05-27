@@ -1,0 +1,93 @@
+# =============================================================================
+# TEMPLATE — release-image.yml  (ADR-BV-001, Trilho A — publica imagem no GHCR)
+# -----------------------------------------------------------------------------
+# NÃO roda neste repo (infra). Copie para `.github/workflows/release-image.yml`
+# DENTRO de cada serviço que tem um `Dockerfile` na raiz
+# (svc-social-care, svc-people-context, svc-analysis-bi; `web` precisa de Dockerfile primeiro).
+#
+# Publica em `ghcr.io/<owner>/<repo>` (auto: acdgbrasil/svc-x, ou o fork BV) a cada:
+#   - tag SemVer `vX.Y.Z`  → tags 1.2.3, 1.2, latest
+#   - push em `main`       → tag `edge`
+#   - disparo manual
+# Inclui attestations de proveniência + SBOM (supply chain) e imprime o DIGEST
+# no summary — use-o para pinar `image: ghcr.io/...@sha256:<digest>` no infra/compose
+# (habilita o Dependabot do Trilho A). Actions pinadas em SHA.
+# =============================================================================
+name: release-image
+
+on:
+  push:
+    tags: ["v*.*.*"]
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  packages: write       # push no GHCR via GITHUB_TOKEN (namespace do próprio repo)
+  id-token: write       # attestations (proveniência/SBOM)
+  attestations: write
+
+concurrency:
+  group: release-image-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4.1.0
+
+      - name: Login no GHCR
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Metadata (tags + labels OCI)
+        id: meta
+        uses: docker/metadata-action@80c7e94dd9b9319bd5eb7a0e0fe9291e23a2a2e9 # v6.1.0
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=edge,branch=main
+            type=sha,format=long
+          flavor: |
+            latest=auto
+
+      - name: Build & push
+        id: build
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64   # VPS Magalu é x86; adicione linux/arm64 se precisar
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: true
+          sbom: true
+
+      - name: Digest para pinar no infra/compose
+        run: |
+          {
+            echo "### 🐳 Imagem publicada no GHCR"
+            echo ""
+            echo "Pin por digest no \`infra/compose/compose.<svc>.yml\` (Trilho A):"
+            echo '```yaml'
+            echo "image: ghcr.io/${{ github.repository }}@${{ steps.build.outputs.digest }}"
+            echo '```'
+            echo ""
+            echo "Tags publicadas:"
+            echo '```'
+            echo "${{ steps.meta.outputs.tags }}"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
