@@ -22,7 +22,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/language/go/
+infra/reference/language/go/
 ```
 
 | Arquivo | Uso |

@@ -1,7 +1,7 @@
 # sources.md — mapa do espelho TanStack
 
 Base: `HBROOT/framework/` onde
-`HBROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/web/handbook/reference`
+`HBROOT = web/handbook/reference`
 
 > ⚠️ Estas fontes ficam em `web/handbook/reference/`, NÃO em `infra/reference/`.
 

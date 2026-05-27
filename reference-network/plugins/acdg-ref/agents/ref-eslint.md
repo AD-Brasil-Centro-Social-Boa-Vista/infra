@@ -23,7 +23,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/web/handbook/reference/quality/eslint/
+web/handbook/reference/quality/eslint/
 ```
 
 - `docs/src/use/configure/` — flat config, regras, parsers, plugins, ignore.

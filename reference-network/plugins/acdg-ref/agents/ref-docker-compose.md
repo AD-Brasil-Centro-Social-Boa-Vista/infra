@@ -23,7 +23,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/infra/docker-compose/
+infra/reference/infra/docker-compose/
 ```
 
 - Default: Compose file reference em `reference/compose-file/*.md` (índice: `_index.md`).

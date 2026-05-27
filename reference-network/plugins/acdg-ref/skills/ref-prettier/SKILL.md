@@ -29,7 +29,7 @@ oficial, mas **não conhece o código** de nenhum serviço ACDG e **não opina**
 ```
 REFROOT/quality/prettier/
 ```
-onde `REFROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFROOT = infra/reference`
 
 | Arquivo | Conteúdo |
 |---------|----------|

@@ -23,7 +23,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/interop-health/fhir-br-core/
+infra/reference/interop-health/fhir-br-core/
 ```
 
 - Ponto de entrada: `extracted/overview.html` (visão geral) e `extracted/modules.html` (mapa de módulos).

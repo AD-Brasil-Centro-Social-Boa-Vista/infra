@@ -24,7 +24,7 @@ Sua única tarefa: responder a pergunta recebida **a partir do espelho offline**
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/compliance/
+infra/reference/compliance/
 ```
 
 - **Primário**: `lgpd-lei-13709-2018.html` — texto integral da Lei nº 13.709/2018. Use `Grep` pelo número do artigo ou pelo termo-chave.

@@ -1,7 +1,7 @@
 # sources.md — mapa do espelho Prettier
 
 Base: `REFROOT/quality/prettier/`
-onde `REFROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFROOT = infra/reference`
 
 Versão espelhada: **Prettier 3.x** (HEAD: d33a1b0, capturado em 2026-05-27).
 

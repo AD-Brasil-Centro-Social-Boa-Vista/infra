@@ -38,7 +38,7 @@ HBROOT/framework/tanstack-form/
 HBROOT/framework/tanstack-table/
 ```
 
-onde `HBROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/web/handbook/reference`
+onde `HBROOT = web/handbook/reference`
 
 > ⚠️ **ATENÇÃO**: as fontes TanStack ficam em `web/handbook/reference/`, NÃO em
 > `infra/reference/`. São caminhos distintos.

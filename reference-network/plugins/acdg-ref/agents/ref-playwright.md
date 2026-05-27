@@ -23,7 +23,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/testing/playwright/
+infra/reference/testing/playwright/
 ```
 
 - Versão espelhada: **Playwright latest main** (JS/TS, SHA `1845d3f`, captura 2026-05-27, v1.60+).

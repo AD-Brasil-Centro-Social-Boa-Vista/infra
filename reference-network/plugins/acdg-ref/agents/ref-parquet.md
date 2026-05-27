@@ -24,7 +24,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/data-format/apache-parquet/
+infra/reference/data-format/apache-parquet/
 ```
 
 - **Formato**: `format/` — MDs da spec (Encodings, LogicalTypes, Compression, BloomFilter, PageIndex, Encryption, Geospatial, Variant, CHANGES). Versão: **2.11.0 (HEAD mai/2026)**.

@@ -23,7 +23,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/logging/pino/
+infra/reference/logging/pino/
 ```
 
 Versão espelhada: **Pino v18+** (SHA `ff0dc5c6`, 2026-05-27).

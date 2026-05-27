@@ -22,7 +22,7 @@ espelho offline** e devolver uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-HBROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/web/handbook/reference
+HBROOT = web/handbook/reference
 ```
 
 > ⚠️ As fontes TanStack ficam em `web/handbook/reference/`, NÃO em `infra/reference/`.

@@ -29,7 +29,7 @@ oficial, mas **não conhece o código** de nenhum serviço ACDG e **não opina**
 HBROOT/ui/tailwind/
 ```
 
-onde `HBROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/web/handbook/reference`
+onde `HBROOT = web/handbook/reference`
 
 > **Atenção:** este universo está em `web/handbook/reference/`, NÃO em `infra/reference/`.
 > O espelho reflete a doc do **repositório `tailwindlabs/tailwindcss.com`** (branch `main`,

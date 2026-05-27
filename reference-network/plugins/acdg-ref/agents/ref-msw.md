@@ -23,7 +23,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/testing/msw/
+infra/reference/testing/msw/
 ```
 
 - Versão espelhada: **MSW latest main** (SHA `7a633bd`, captura 2026-05-27).

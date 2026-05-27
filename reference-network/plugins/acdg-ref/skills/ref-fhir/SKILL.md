@@ -30,7 +30,7 @@ e **não opina** sobre ele.
 ```
 REFERENCE_ROOT/interop-health/fhir-br-core/
 ```
-onde `REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFERENCE_ROOT = infra/reference`
 
 | Artefato | Descrição | Quando usar |
 |----------|-----------|-------------|

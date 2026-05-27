@@ -24,7 +24,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/infra/caddy/
+infra/reference/infra/caddy/
 ```
 
 - Entrada: `index.md` (visão geral), `caddyfile/concepts.md` (conceitos), `caddyfile/directives.md` (índice).

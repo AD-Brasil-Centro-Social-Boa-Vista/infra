@@ -29,7 +29,7 @@ oficial, mas **não conhece o código** de nenhum serviço ACDG e **não opina**
 ```
 REFERENCE_ROOT/infra/docker-compose/
 ```
-onde `REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFERENCE_ROOT = infra/reference`
 
 | Subárea | Caminho | Quando usar |
 |---------|---------|-------------|

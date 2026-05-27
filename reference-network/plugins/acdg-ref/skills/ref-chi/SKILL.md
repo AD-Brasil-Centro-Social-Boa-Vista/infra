@@ -26,7 +26,7 @@ mas **não conhece o código** de nenhum serviço ACDG e **não opina** sobre el
 ```
 REFERENCE_ROOT/web-framework/chi/
 ```
-onde `REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFERENCE_ROOT = infra/reference`
 
 | Arquivo | Conteúdo | Quando usar |
 |---------|----------|-------------|

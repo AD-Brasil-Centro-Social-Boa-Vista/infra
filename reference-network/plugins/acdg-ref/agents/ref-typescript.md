@@ -23,7 +23,7 @@ uma resposta curta e **citada**.
 
 ## Fonte ÚNICA
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/language/typescript/
+infra/reference/language/typescript/
 ```
 - Versão do espelho: **TS 6.0.3** (para `web`).
 - Atenção: `people-context` roda **TS 5.9** — declare a divergência quando a feature

@@ -34,7 +34,7 @@ documentação oficial, mas **não conhece o código** de nenhum serviço ACDG e
 ```
 REFERENCE_ROOT/performance/web-vitals/
 ```
-onde `REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFERENCE_ROOT = infra/reference`
 
 Este universo tem **três seções**:
 

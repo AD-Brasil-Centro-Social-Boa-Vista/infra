@@ -1,7 +1,7 @@
 # sources.md — mapa do espelho Tailwind CSS
 
 Base: `HBROOT/ui/tailwind/`
-onde `HBROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/web/handbook/reference`
+onde `HBROOT = web/handbook/reference`
 
 > **Localização especial:** este universo está em `web/handbook/reference/`, NÃO em `infra/reference/`.
 > Versão espelhada: **Tailwind CSS v4.3** (fonte: `tailwindlabs/tailwindcss.com` branch `main`, pasta `src/docs/`).

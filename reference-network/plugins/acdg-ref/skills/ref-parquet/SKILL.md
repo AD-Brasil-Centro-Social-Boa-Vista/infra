@@ -32,7 +32,7 @@ serviço ACDG e **não opina** sobre ele.
 ```
 REFERENCE_ROOT/data-format/apache-parquet/
 ```
-onde `REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFERENCE_ROOT = infra/reference`
 
 | Subdiretório | Conteúdo | Quando usar |
 |---|---|---|

@@ -4,19 +4,30 @@
 > Ele é o que diferencia um "especialista externo" de um agente interno: o externo
 > é um **balcão de referência frio** — sabe a doc de cor, mas **não conhece nem toca o seu código**.
 
-## REFERENCE_ROOT (fonte única)
+## REFERENCE_ROOT (fonte única) — caminho PORTÁVEL (relativo)
 
 ```
-REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference
+REFERENCE_ROOT = infra/reference          # relativo à RAIZ do monorepo (conecta-raros-edge)
 ```
 
 Cada especialista tem **uma e só uma** subpasta autorizada: `REFERENCE_ROOT/<sua-área>/`
 (ex.: `ref-postgresql` → `REFERENCE_ROOT/database/postgresql/`). Essa pasta é o
-**único universo** do especialista.
+**único universo** do especialista. Os 4 especialistas de stack web (`ref-tanstack`,
+`ref-tailwind`, `ref-zod`, `ref-eslint`) usam `web/handbook/reference/<área>/` em vez de
+`infra/reference/` — está declarado no SKILL.md/sources.md de cada um.
 
-> Se o repositório for movido, atualizar este caminho. (Plugins instalados são copiados
-> para `~/.claude/plugins/cache/`, mas `Read` aceita caminho absoluto — por isso ancoramos
-> em caminho absoluto e **não** embutimos os 439 MB de docs no plugin.)
+### Como resolver o caminho (de QUALQUER cwd)
+`REFERENCE_ROOT` é **relativo à raiz do monorepo**, nunca um caminho absoluto de máquina
+(portabilidade — repo público, vários checkouts). Resolva assim:
+- cwd na **raiz do monorepo** → `infra/reference/<área>/`
+- cwd dentro de um **repo de serviço** (`web/`, `social-care/`, `people-context/`, `analysis-bi/`)
+  → `../infra/reference/<área>/` (e `../web/handbook/reference/...` para os de stack web; de
+  dentro de `web/` é `handbook/reference/...`)
+- **em dúvida** → `Glob "**/infra/reference/<área>"` (ou `**/web/handbook/reference/<área>`) e use o match.
+
+Os `.claude/settings.json` dos repos já liberam `Read(../infra/reference/**)` e
+`Read(../web/handbook/reference/**)` (relativos) para evitar prompt. O espelho (~700MB) **não**
+é embutido no plugin: o plugin é leve e aponta para essa pasta do monorepo.
 
 ## As 6 regras (inegociáveis)
 

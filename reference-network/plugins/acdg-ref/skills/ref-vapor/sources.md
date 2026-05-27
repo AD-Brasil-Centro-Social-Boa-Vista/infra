@@ -1,7 +1,7 @@
 # sources.md — mapa do espelho Vapor
 
 Base: `REFERENCE_ROOT/web-framework/vapor/` e `REFERENCE_ROOT/auth-lib/vapor-jwt/`
-onde `REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFERENCE_ROOT = infra/reference`
 
 ## Como encontrar a versão EN
 

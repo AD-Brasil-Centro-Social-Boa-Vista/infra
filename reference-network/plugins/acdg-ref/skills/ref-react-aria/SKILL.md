@@ -33,7 +33,7 @@ serviço ACDG e **não opina** sobre ele.
 REFROOT/ui/react-aria-components/
 ```
 
-onde `REFROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFROOT = infra/reference`
 
 | Seção | Caminho | Conteúdo |
 |-------|---------|---------|

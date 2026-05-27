@@ -24,7 +24,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/auth-idp/authentik/
+infra/reference/auth-idp/authentik/
 ```
 
 - Versão: **HEAD/main @ 2026-05-27** (SHA `ed5b7d17b1dd91ca2c7f55c33f4412909d73b11a`).

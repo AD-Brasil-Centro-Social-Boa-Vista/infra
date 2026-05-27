@@ -24,7 +24,7 @@ e devolver uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/secrets/vaultwarden/
+infra/reference/secrets/vaultwarden/
 ```
 
 - Default: arquivos Markdown da wiki do GitHub (HEAD @ 2026-05-27).

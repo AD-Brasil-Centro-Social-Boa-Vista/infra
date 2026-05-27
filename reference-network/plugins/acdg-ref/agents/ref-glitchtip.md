@@ -24,7 +24,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/observability/glitchtip/
+infra/reference/observability/glitchtip/
 ```
 
 > **ATENÇÃO:** O espelho são arquivos `.html` (snapshot wget de glitchtip.com/documentation,

@@ -34,7 +34,7 @@ o código** de nenhum serviço ACDG e **não opina** sobre ele.
 ```
 REFERENCE_ROOT/observability/opentelemetry/
 ```
-onde `REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFERENCE_ROOT = infra/reference`
 
 Este universo tem **duas seções**:
 

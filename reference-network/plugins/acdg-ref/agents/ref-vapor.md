@@ -24,8 +24,8 @@ e devolver uma resposta curta e **citada**.
 ## Fontes ÚNICAS
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/web-framework/vapor/
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/auth-lib/vapor-jwt/
+infra/reference/web-framework/vapor/
+infra/reference/auth-lib/vapor-jwt/
 ```
 
 - **Vapor docs** (4.121.3): `web-framework/vapor/docs/` — Markdown organizado em seções

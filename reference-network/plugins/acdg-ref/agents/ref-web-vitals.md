@@ -24,7 +24,7 @@ espelho offline** e devolver uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/performance/web-vitals/
+infra/reference/performance/web-vitals/
 ```
 
 Três seções:

@@ -25,7 +25,7 @@ Você é o **balcão de referência frio** de OpenTofu/Terraform HCL e do provid
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/iac/
+infra/reference/iac/
 ```
 
 | Subpasta | Versão | Uso |

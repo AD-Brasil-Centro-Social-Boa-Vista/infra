@@ -24,7 +24,7 @@ espelho offline** e devolver uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/secrets/infisical/
+infra/reference/secrets/infisical/
 ```
 
 - Default: arquivos MDX do espelho Mintlify (HEAD @ 2026-05-27).

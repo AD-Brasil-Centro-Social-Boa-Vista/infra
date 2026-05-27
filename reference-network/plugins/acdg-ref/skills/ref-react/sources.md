@@ -1,7 +1,7 @@
 # sources.md — mapa do espelho React
 
 Base: `REFROOT/ui/react/`
-onde `REFROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFROOT = infra/reference`
 
 **Versão**: React 19 · SHA do espelho: `6ec61348` · data: 2026-05-27 · ~223 arquivos .md
 

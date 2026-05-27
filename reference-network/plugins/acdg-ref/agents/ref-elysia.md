@@ -23,7 +23,7 @@ rodando em contexto isolado. Sua única tarefa: responder a pergunta recebida
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/web-framework/elysia/
+infra/reference/web-framework/elysia/
 ```
 
 - Default: Elysia 1.4.28 nos arquivos `.md` sob essa pasta.

@@ -29,7 +29,7 @@ a documentação oficial, mas **não conhece o código** de nenhum serviço ACDG
 ```
 HBROOT/quality/eslint/
 ```
-onde `HBROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/web/handbook/reference`
+onde `HBROOT = web/handbook/reference`
 
 | Conteúdo | Caminho dentro do universo |
 |----------|---------------------------|

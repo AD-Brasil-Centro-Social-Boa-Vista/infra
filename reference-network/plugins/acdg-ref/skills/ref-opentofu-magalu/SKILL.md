@@ -33,7 +33,7 @@ Você decorou a documentação oficial, mas **não conhece o código** de nenhum
 ```
 REFERENCE_ROOT/iac/
 ```
-onde `REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFERENCE_ROOT = infra/reference`
 
 | Fonte | Versão | Caminho | Quando usar |
 |-------|--------|---------|-------------|

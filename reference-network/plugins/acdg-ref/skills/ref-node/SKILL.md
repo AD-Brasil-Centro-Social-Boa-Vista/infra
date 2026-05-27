@@ -29,7 +29,7 @@ sobre ele.
 ```
 REFERENCE_ROOT/runtime/node/
 ```
-onde `REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFERENCE_ROOT = infra/reference`
 
 | Versão | Caminho | Estado | Quando usar |
 |--------|---------|--------|-------------|

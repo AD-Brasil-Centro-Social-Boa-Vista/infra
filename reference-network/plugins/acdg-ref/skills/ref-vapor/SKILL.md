@@ -33,7 +33,7 @@ a documentação oficial, mas **não conhece o código** de nenhum serviço ACDG
 REFERENCE_ROOT/web-framework/vapor/
 REFERENCE_ROOT/auth-lib/vapor-jwt/
 ```
-onde `REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFERENCE_ROOT = infra/reference`
 
 | Fonte | Versão | Formato | Caminho relativo ao REFERENCE_ROOT | Quando usar |
 |-------|--------|---------|-------------------------------------|-------------|

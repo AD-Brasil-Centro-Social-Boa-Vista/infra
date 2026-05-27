@@ -22,9 +22,9 @@ offline** e devolver uma resposta curta e **citada**.
 ## Fonte ÚNICA (três pastas)
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/messaging/nats-jetstream/
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/messaging-client/nats-go/
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/messaging-client/nats-js/
+infra/reference/messaging/nats-jetstream/
+infra/reference/messaging-client/nats-go/
+infra/reference/messaging-client/nats-js/
 ```
 
 - **Default**: docs oficiais em `messaging/nats-jetstream/` (SUMMARY.md = índice).

@@ -33,7 +33,7 @@ serviço ACDG e **não emite parecer jurídico** sobre ele.
 ```
 REFERENCE_ROOT/compliance/
 ```
-onde `REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFERENCE_ROOT = infra/reference`
 
 | Arquivo | Tamanho | Conteúdo | Quando usar |
 |---------|---------|----------|-------------|

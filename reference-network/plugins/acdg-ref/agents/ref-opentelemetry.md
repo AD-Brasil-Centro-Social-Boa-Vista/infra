@@ -25,7 +25,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/observability/opentelemetry/
+infra/reference/observability/opentelemetry/
 ```
 
 Duas seções:

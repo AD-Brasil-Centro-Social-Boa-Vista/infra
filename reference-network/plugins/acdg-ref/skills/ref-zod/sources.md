@@ -1,7 +1,7 @@
 # sources.md — mapa do espelho Zod
 
 Base: `HBROOT/validation/zod/`
-onde `HBROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/web/handbook/reference`
+onde `HBROOT = web/handbook/reference`
 
 > **Localização especial:** este universo está em `web/handbook/reference/`, NÃO em `infra/reference/`.
 > Versão espelhada: **Zod 4** (fonte: `colinhacks/zod` branch `main`, pasta `packages/docs/content/`).

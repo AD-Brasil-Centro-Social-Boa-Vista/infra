@@ -1,7 +1,7 @@
 # sources.md — mapa do espelho React Aria Components
 
 Base: `REFROOT/ui/react-aria-components/`
-onde `REFROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFROOT = infra/reference`
 
 **Versão**: RAC 1.17+ · SHA do espelho: `8e4498fa` · data: 2026-05-27 · ~224 arquivos .md/.mdx
 

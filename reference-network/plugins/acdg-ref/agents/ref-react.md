@@ -22,7 +22,7 @@ devolver uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/ui/react/
+infra/reference/ui/react/
 ```
 
 - `reference/react/` — hooks e APIs do pacote react.

@@ -40,7 +40,7 @@ O universo deste especialista é um **snapshot HTML** obtido via `wget` do site 
 ```
 REFERENCE_ROOT/observability/glitchtip/
 ```
-onde `REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFERENCE_ROOT = infra/reference`
 
 | Arquivo | URL de origem | Conteúdo |
 |---------|--------------|----------|

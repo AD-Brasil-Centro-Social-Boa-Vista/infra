@@ -29,7 +29,7 @@ mas **não conhece o código** de nenhum serviço ACDG e **não opina** sobre el
 ```
 REFERENCE_ROOT/auth-idp/authentik/
 ```
-onde `REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFERENCE_ROOT = infra/reference`
 
 | Tópico | Caminho inicial | Quando usar |
 |--------|----------------|-------------|

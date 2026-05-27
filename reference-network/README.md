@@ -60,20 +60,22 @@ Os 4 repos (`social-care`, `people-context`, `analysis-bi`, `web`) já têm no `
 {
   "extraKnownMarketplaces": {
     "acdg-reference-network": {
-      "source": { "source": "directory", "path": "<abs>/infra/reference-network" }
+      "source": { "source": "directory", "path": "../infra/reference-network" }
     }
   },
   "enabledPlugins": { "acdg-ref@acdg-reference-network": true },
   "permissions": { "allow": [
-    "Read(<abs>/infra/reference/**)",
-    "Read(<abs>/web/handbook/reference/**)"
+    "Read(../infra/reference/**)",
+    "Read(../web/handbook/reference/**)"
   ] }
 }
 ```
-(`<abs>` = raiz absoluta do `conecta-raros-edge`.) Os dois `Read`-allow deixam os externos lerem o
-espelho sem prompt: a maioria em `infra/reference/`, e os 4 de universo-handbook (`ref-tanstack`,
-`ref-tailwind`, `ref-zod`, `ref-eslint`) em `web/handbook/reference/` — inclusive quando consultados
-de outro repo. (No `web` o handbook é in-cwd; a allow é redundante lá, mas mantida por uniformidade.)
+**Caminhos RELATIVOS (portáveis)** — nada de `/Users/<nome>/...`. Os 4 repos de serviço são irmãos de
+`infra/` e `web/` no monorepo, então `../infra/reference-network`, `../infra/reference/**` e
+`../web/handbook/reference/**` resolvem para o mesmo lugar em qualquer checkout/máquina. Os dois
+`Read`-allow deixam os externos lerem o espelho sem prompt (incl. os 4 de universo-handbook:
+`ref-tanstack`, `ref-tailwind`, `ref-zod`, `ref-eslint`). Ver a recipe de resolução em
+[`CONSULTATION-CONTRACT.md`](./CONSULTATION-CONTRACT.md).
 
 **Para ativar:** reinicie a sessão do Claude Code no repo, ou rode `/reload-plugins`. Depois:
 `/acdg-ref:ref-<tech> <pergunta>` (direto) ou delegue via `subagent_type: "acdg-ref:ref-<tech>"`.

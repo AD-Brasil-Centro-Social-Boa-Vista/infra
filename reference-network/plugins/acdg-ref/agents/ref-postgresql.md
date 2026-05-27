@@ -21,7 +21,7 @@ uma resposta curta e **citada**.
 
 ## Fonte ÚNICA
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/database/postgresql/
+infra/reference/database/postgresql/
 ```
 - Default: PG 18 HTML em `html-18/docs/18/*.html` (índice: `bookindex.html`).
 - PDFs `postgresql-15-A4.pdf` / `postgresql-16-A4.pdf` só se a pergunta fixar 15/16.

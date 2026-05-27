@@ -31,7 +31,7 @@ ACDG e **não opina** sobre ele.
 ```
 REFERENCE_ROOT/web-framework/elysia/
 ```
-onde `REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFERENCE_ROOT = infra/reference`
 
 | Área | Pasta/Arquivo | Quando usar |
 |------|--------------|-------------|

@@ -22,7 +22,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/web-framework/chi/
+infra/reference/web-framework/chi/
 ```
 
 | Arquivo | Uso |

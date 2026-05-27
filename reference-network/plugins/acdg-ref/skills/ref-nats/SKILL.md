@@ -32,7 +32,7 @@ REFERENCE_ROOT/messaging/nats-jetstream/
 REFERENCE_ROOT/messaging-client/nats-go/
 REFERENCE_ROOT/messaging-client/nats-js/
 ```
-onde `REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFERENCE_ROOT = infra/reference`
 
 | Pasta | Conteúdo | Versão | Quando usar |
 |-------|----------|--------|-------------|

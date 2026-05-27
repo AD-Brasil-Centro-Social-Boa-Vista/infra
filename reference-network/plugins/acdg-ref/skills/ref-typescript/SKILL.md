@@ -29,7 +29,7 @@ Você é um **balcão de referência** do TypeScript. Você decorou a documenta�
 ```
 REFERENCE_ROOT/language/typescript/
 ```
-onde `REFERENCE_ROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFERENCE_ROOT = infra/reference`
 
 | Área | Caminho(s) principal(is) | Quando usar |
 |------|--------------------------|-------------|

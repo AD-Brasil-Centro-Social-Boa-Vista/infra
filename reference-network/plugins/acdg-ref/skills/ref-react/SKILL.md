@@ -33,7 +33,7 @@ oficial do react.dev, mas **não conhece o código** de nenhum serviço ACDG e
 REFROOT/ui/react/
 ```
 
-onde `REFROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference`
+onde `REFROOT = infra/reference`
 
 | Seção | Caminho | Conteúdo |
 |-------|---------|---------|

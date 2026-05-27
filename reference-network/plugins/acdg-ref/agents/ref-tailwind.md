@@ -23,7 +23,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/web/handbook/reference/ui/tailwind/
+web/handbook/reference/ui/tailwind/
 ```
 
 > Esta pasta fica em `web/handbook/reference/`, NÃO em `infra/reference/`.

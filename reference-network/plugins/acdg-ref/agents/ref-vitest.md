@@ -22,7 +22,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/testing/vitest/
+infra/reference/testing/vitest/
 ```
 
 - Versão espelhada: **Vitest 3.x** (HEAD 5.0.0-beta.3, captura 2026-05-27).

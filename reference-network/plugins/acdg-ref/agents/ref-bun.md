@@ -22,7 +22,7 @@ uma resposta curta e **citada**.
 
 ## Fonte ÚNICA
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/runtime/bun/
+infra/reference/runtime/bun/
 ```
 - Versão: Bun **1.3.11** (MDX, 332 arquivos).
 - Ponto de entrada: `index.mdx`; guias temáticos em `guides/`; runtime em `runtime/`;

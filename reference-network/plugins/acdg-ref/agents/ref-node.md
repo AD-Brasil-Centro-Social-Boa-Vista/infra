@@ -24,7 +24,7 @@ uma resposta curta e **citada**.
 
 ## Fonte ÚNICA
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/runtime/node/
+infra/reference/runtime/node/
 ```
 - **v24 LTS** (default): `v24/docs/latest-v24.x/api/` — v24.16.0 — usado por `web` em produção.
 - **v26 GA** (planejamento): `v26/docs/latest-v26.x/api/` — v26.2.0 — somente quando pedido.

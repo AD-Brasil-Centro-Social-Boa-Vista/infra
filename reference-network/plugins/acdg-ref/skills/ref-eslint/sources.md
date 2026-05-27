@@ -1,7 +1,7 @@
 # sources.md — mapa do espelho ESLint
 
 Base: `HBROOT/quality/eslint/`
-onde `HBROOT = /Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/web/handbook/reference`
+onde `HBROOT = web/handbook/reference`
 
 Versão espelhada: **ESLint 10.4.0** (flat config — padrão desde v9).
 

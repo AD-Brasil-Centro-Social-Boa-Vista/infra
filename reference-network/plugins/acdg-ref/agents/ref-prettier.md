@@ -23,7 +23,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/quality/prettier/
+infra/reference/quality/prettier/
 ```
 
 - `options.md` — todas as opções com defaults e tipos (fonte primária para valores).

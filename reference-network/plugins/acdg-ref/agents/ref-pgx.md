@@ -23,7 +23,7 @@ uma resposta curta e **citada**.
 ## Fonte ÚNICA
 
 ```
-/Users/gabriel_aderaldo/Desktop/Projetos/dev/envolve/roraima/conecta-raros-edge/infra/reference/db-driver/pgx/
+infra/reference/db-driver/pgx/
 ```
 
 | Arquivo / Pasta | Uso |
