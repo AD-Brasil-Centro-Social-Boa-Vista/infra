@@ -1,0 +1,69 @@
+# =============================================================================
+# TEMPLATE — sync-upstream.yml  (ADR-BV-001, Trilho B "soft-fork")
+# -----------------------------------------------------------------------------
+# NÃO roda neste repo (infra). Copie para `.github/workflows/sync-upstream.yml`
+# DENTRO de um FORK de serviço (org AD-Brasil-Centro-Social-Boa-Vista) e ajuste
+# o `UPSTREAM` abaixo. Pré-requisito: o fork tem as branches `upstream-main`
+# (espelho puro do upstream) e `bv-main` (= upstream + patches BV por cima).
+#
+# O que faz, semanalmente (e sob demanda):
+#   1. Fast-forward de `upstream-main` a partir do default do upstream (gh repo sync).
+#      Falha segura se divergir — `upstream-main` NUNCA deve ter commits locais.
+#   2. Se `upstream-main` ficou à frente de `bv-main`, abre/atualiza um PR
+#      `upstream-main -> bv-main` para você revisar conflitos e mergear.
+#
+# Sem actions de terceiros: só `gh`/`gh api` com o GITHUB_TOKEN (supply-chain mínima).
+# =============================================================================
+name: sync-upstream
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # segunda 06:00 UTC (03:00 BRT) — Actions agendadas só rodam na default branch
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  # >>> AJUSTAR por fork <<<  (ex.: acdgbrasil/svc-social-care)
+  UPSTREAM: acdgbrasil/<REPO>
+  MIRROR_BRANCH: upstream-main
+  WORK_BRANCH: bv-main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fast-forward do espelho (upstream-main) a partir do upstream
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          echo "Sincronizando $GITHUB_REPOSITORY:$MIRROR_BRANCH <- $UPSTREAM (default)"
+          if ! gh repo sync "$GITHUB_REPOSITORY" --branch "$MIRROR_BRANCH" --source "$UPSTREAM"; then
+            echo "::warning::gh repo sync falhou (provável divergência)."
+            echo "::warning::'$MIRROR_BRANCH' deve ser espelho PURO — não comite patches nele (patches só em '$WORK_BRANCH')."
+            exit 1
+          fi
+
+      - name: Abrir PR upstream-main -> bv-main (se houver updates)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          ahead=$(gh api "repos/$GITHUB_REPOSITORY/compare/$WORK_BRANCH...$MIRROR_BRANCH" --jq '.ahead_by' 2>/dev/null || echo 0)
+          if [ "${ahead:-0}" -gt 0 ]; then
+            existing=$(gh pr list -R "$GITHUB_REPOSITORY" --base "$WORK_BRANCH" --head "$MIRROR_BRANCH" --state open --json number --jq '.[].number' || true)
+            if [ -z "$existing" ]; then
+              gh pr create -R "$GITHUB_REPOSITORY" \
+                --base "$WORK_BRANCH" --head "$MIRROR_BRANCH" \
+                --title "chore: merge upstream em $WORK_BRANCH ($(date +%F))" \
+                --body "Sync automático de \`$UPSTREAM\` -> \`$MIRROR_BRANCH\` (espelho). $ahead commit(s) novo(s). Revise conflitos e mergeie em \`$WORK_BRANCH\`. Ref: ADR-BV-001 (Trilho B soft-fork)."
+              echo "PR aberto."
+            else
+              echo "PR #$existing já aberto — atualizado pelo push do espelho."
+            fi
+          else
+            echo "Nada a fazer: '$MIRROR_BRANCH' não está à frente de '$WORK_BRANCH'."
+          fi
