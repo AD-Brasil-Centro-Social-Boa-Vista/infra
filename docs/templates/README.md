@@ -7,6 +7,13 @@ patch, **não forke nada** (Trilho A: consumir imagens). Forke preguiçosamente,
 Faz build do `Dockerfile` do serviço e publica em `ghcr.io/<owner>/<repo>` (com proveniência + SBOM),
 imprimindo o **digest** no summary. É o que **destrava o Trilho A** (o `infra` consome imagens pinadas).
 
+> **Padrão da casa (acdgbrasil):** os serviços já usam um **reusable workflow centralizado** —
+> `acdgbrasil/.github/.github/workflows/reusable-ghcr-build-push.yml@main` (ver `release-ghcr.yml` em
+> svc-social-care / svc-people-context / svc-analysis-bi). **Prefira chamá-lo** (1 caller de ~25 linhas,
+> com `service`/`context`/`dockerfile`/`registry`/`image_namespace`) — é mais DRY e consistente. Use
+> ESTE template standalone só onde o reusable **não** estiver acessível (ex.: um fork BV isolado, ou
+> outra org sem o `.github` compartilhado).
+
 **Instalar (por serviço com Dockerfile):**
 ```bash
 cd <serviço>            # svc-social-care | svc-people-context | svc-analysis-bi
